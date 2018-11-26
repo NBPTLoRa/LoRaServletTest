@@ -26,12 +26,12 @@ public class LoRaQuery extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
     public void init() {
-		try {
-			iDB=new influxDBQuery();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			try {
+				iDB=new influxDBQuery();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
