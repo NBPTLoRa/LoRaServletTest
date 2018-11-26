@@ -14,8 +14,9 @@ import com.google.gson.JsonObject;
 public class influxDBQuery {
 
 	InfluxDB iDB;
-	public influxDBQuery()
+	public influxDBQuery() throws ClassNotFoundException
 	{
+		Class.forName("org.influxdb.InfluxDBFactory");
 		iDB=InfluxDBFactory.connect("http://167.179.83.38:8086", "admin", "admin");
 		if(iDB!=null)
 		{

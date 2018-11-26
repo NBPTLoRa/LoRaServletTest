@@ -13,7 +13,7 @@ import org.influxdb.dto.QueryResult.Series;
 import com.google.gson.JsonObject;
 
 
-public class Test{
+class Test{
 	public static void main(String[] args)
 	{
 		long stime=new Date().getTime();
