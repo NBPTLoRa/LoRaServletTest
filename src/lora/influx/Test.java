@@ -18,7 +18,7 @@ class Test{
 	{
 		long stime=new Date().getTime();
 		InfluxDB iDB;
-		iDB=InfluxDBFactory.connect("http://167.179.83.38:8086", "admin", "admin");
+		iDB=InfluxDBFactory.connect("http://167.179.83.38:8086", "admin", "admin");//×¢ÊÍ
 		if(iDB!=null)
 		{
 			System.out.println("DATABASEConnectSuccess!!!!!"); 
