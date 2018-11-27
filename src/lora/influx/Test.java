@@ -18,7 +18,7 @@ class Test{
 	{
 		long stime=new Date().getTime();
 		InfluxDB iDB;
-		iDB=InfluxDBFactory.connect("http://167.179.83.38:8086", "admin", "admin");//×¢ÊÍ
+		iDB=InfluxDBFactory.connect("http://167.179.83.38:8086", "admin", "admin");//æ³¨é‡Š
 		if(iDB!=null)
 		{
 			System.out.println("DATABASEConnectSuccess!!!!!"); 
@@ -37,8 +37,8 @@ class Test{
 		{
 			List<Series> series = temp.getSeries();
 			for(Series serie : series){
-				List<List<Object>> values = serie.getValues();//×Ö¶Î×Ö¼¯ºÏ
-				List<String> colums = serie.getColumns();//×Ö¶ÎÃû
+				List<List<Object>> values = serie.getValues();
+				List<String> colums = serie.getColumns();
 				System.out.println("colums:" + colums);
 				for(List<Object> n : values){
 					System.out.println("value:" + n.toString());
