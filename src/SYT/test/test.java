@@ -15,9 +15,12 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 public class test {
 
 	public static void main(String[] args) throws IOException {
-		String resource = "conf.xml";
-	    Reader reader = Resources.getResourceAsReader(resource); 
+        String resource = "conf.xml";
+     //   InputStream is = test.class.getClassLoader().getResourceAsStream(resource);
+       // SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(is);
+        Reader reader = Resources.getResourceAsReader(resource); 
         SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(reader);
+
 	    SqlSession session = sessionFactory.openSession(); 
 	    String start="SYT.mapping.userMapper.getAllUser";
         List<User> use=session.selectList(start);

@@ -3,15 +3,15 @@
 <mapper namespace="SYT.mapping.userMapper">
 
     <select id="getUser" parameterType="int" 
-        resultType="me.gacl.domain.User">
+        resultType="SYT.domain.User">
         select * from users where id=#{id}
     </select>
     
-     <insert id="addUser" parameterType="me.gacl.domain.User">
+     <insert id="addUser" parameterType="SYT.domain.User">
          insert into users(id,name,age) values(#{id},#{name},#{age})
      </insert>
            
-        <select id="getAllUser"  resultType="me.gacl.domain.User">
+        <select id="getAllUser"  resultType="SYT.domain.User">
         select * from users 
     </select>
             
