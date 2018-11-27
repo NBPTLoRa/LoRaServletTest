@@ -13,7 +13,6 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 public class test {
 
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
 		String resource = "conf.xml";
 	    Reader reader = Resources.getResourceAsReader(resource); 
         SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(reader);
