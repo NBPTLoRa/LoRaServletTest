@@ -30,7 +30,7 @@ public class LoRaQuery extends HttpServlet {
 				iDB=new influxDBQuery();
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e.printStackTrace();//
 			}
 	}
 	/**
