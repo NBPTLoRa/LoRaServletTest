@@ -1,0 +1,27 @@
+package SYT.test;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.util.List;
+
+import SYT.domain.User;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+public class test {
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		String resource = "conf.xml";
+	    Reader reader = Resources.getResourceAsReader(resource); 
+        SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(reader);
+	    SqlSession session = sessionFactory.openSession(); 
+	    String start="me.gacl.mapping.userMapper.getAllUser";
+        List<User> use=session.selectList(start);
+        session.close();
+        System.out.println(use);
+	}
+
+}
