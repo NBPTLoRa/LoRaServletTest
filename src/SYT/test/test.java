@@ -19,7 +19,7 @@ public class test {
 	    Reader reader = Resources.getResourceAsReader(resource); 
         SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(reader);
 	    SqlSession session = sessionFactory.openSession(); 
-	    String start="me.gacl.mapping.userMapper.getAllUser";
+	    String start="SYT.mapping.userMapper.getAllUser";
         List<User> use=session.selectList(start);
         session.close();
         System.out.println(use);
