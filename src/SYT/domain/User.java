@@ -1,4 +1,4 @@
-package lora.domain;
+package SYT.domain;
 
 public class User {
 
