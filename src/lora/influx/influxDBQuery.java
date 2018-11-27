@@ -35,6 +35,7 @@ public class influxDBQuery {
 		Query query=new Query(sqlcom, database);
 		QueryResult qs=iDB.query(query);
 		jsonObject.addProperty("TableName", table);
+		int i=0;
 		for(Result temp:qs.getResults())
 		{
 			List<Series> series = temp.getSeries();
@@ -45,7 +46,9 @@ public class influxDBQuery {
 				jsonObject.addProperty("colums", colums.toString());
 				for(List<Object> n : values){
 					System.out.println("value:" + n);
-					jsonObject.addProperty("value",n.toString());
+					
+					jsonObject.addProperty("value"+i,n.toString());
+					i++;
 				}
 			}
 		}
