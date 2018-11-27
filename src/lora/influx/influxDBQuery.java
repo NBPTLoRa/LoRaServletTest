@@ -3,11 +3,12 @@ package lora.influx;
 import java.util.List;
 
 import org.influxdb.InfluxDB;
-import org.influxdb.*;
+import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
 import org.influxdb.dto.QueryResult.Result;
 import org.influxdb.dto.QueryResult.Series;
+
 
 import com.google.gson.JsonObject;
 
@@ -16,7 +17,6 @@ public class influxDBQuery {
 	InfluxDB iDB;
 	public influxDBQuery() throws ClassNotFoundException
 	{
-		
 		iDB=InfluxDBFactory.connect("http://167.179.83.38:8086", "admin", "admin");
 		if(iDB!=null)
 		{
