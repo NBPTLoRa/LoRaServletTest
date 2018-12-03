@@ -3,20 +3,20 @@
 <mapper namespace="SYT.mapping.userMapper">
 
     <select id="getUser" parameterType="int" 
-        resultType="SYT.domain.User">
-        select * from users where id=#{id}
+        resultType="_User">
+        select * from school where id=#{id}
     </select>
     
-     <insert id="addUser" parameterType="SYT.domain.User">
-         insert into users(id,name,age) values(#{id},#{name},#{age})
+     <insert id="addUser" parameterType="_User">
+         insert into school(id,name,age) values(#{id},#{name},#{age})
      </insert>
            
-        <select id="getAllUser"  resultType="SYT.domain.User">
-        select * from users 
+        <select id="getAllUser"  resultType="_User">
+        select * from school 
     </select>
             
     <delete id="delete" parameterType="int" >
-    delete from users where id = #{id}
+    delete from school where id = #{id}
     </delete>
     
 </mapper>

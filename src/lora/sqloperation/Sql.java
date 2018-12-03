@@ -1,13 +1,10 @@
 package lora.sqloperation;
 
-import java.io.IOException;
 
 import java.io.InputStream;
-import java.io.Reader;
 import java.util.List;
 
 import SYT.domain.User;
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -40,4 +37,42 @@ public class Sql {
 	    }
 	}
 	
+	public String Add(int id,String name,int age)
+	{
+	    String start="SYT.mapping.userMapper.addUser";
+	    User use =new User();
+	    try
+	    {
+	    	use.setId(id);
+	    	use.setName(name);
+	    	use.setAge(age);
+	    	session.insert(start, use);
+	        session.commit();
+	        session.close();
+			return "成功";
+	    }
+	    catch(Exception ex)
+	    {
+	    	session.close();
+	    	return "错误";
+	    }
+	}
+	
+	public String Delete(int id)
+	{
+	    String start="SYT.mapping.userMapper.delete";
+	    User use =new User();
+	    try
+	    {
+	    	session.delete(start, id);
+	        session.commit();
+	        session.close();
+			return "成功";
+	    }
+	    catch(Exception ex)
+	    {
+	    	session.close();
+	    	return "错误";
+	    }
+	}
 }
