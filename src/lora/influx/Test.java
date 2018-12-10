@@ -33,6 +33,7 @@ class Test{
 		Query query=new Query(sqlcom, database);
 		QueryResult qs=iDB.query(query);
 		jsonObject.addProperty("TableName", table);
+		int i=0;
 		for(Result temp:qs.getResults())
 		{
 			List<Series> series = temp.getSeries();
@@ -41,7 +42,7 @@ class Test{
 				List<String> colums = serie.getColumns();
 				System.out.println("colums:" + colums);
 				for(List<Object> n : values){
-					System.out.println("value:" + n.toString());
+					System.out.println("value:"+i+++ n.toString());
 					jsonObject.addProperty("value",n.toString() );
 				}
 			}
