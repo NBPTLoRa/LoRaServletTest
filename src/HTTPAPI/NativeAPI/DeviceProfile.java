@@ -1,5 +1,10 @@
 package HTTPAPI.NativeAPI;
 
-class DeviceProfile {
+import java.beans.IntrospectionException;
 
+public class DeviceProfile {
+
+	public DeviceProfile() {
+		
+	}
 }
