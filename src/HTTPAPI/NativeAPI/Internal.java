@@ -26,7 +26,7 @@ public class Internal extends APIObject{
 	 * */
 	public JsonObject login(String user,String pwd)
 	{
-		String method="/login";
+		String method="login";
 		JsonObject jsonObject=new JsonObject();
 		
 		
