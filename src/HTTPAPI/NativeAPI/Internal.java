@@ -3,6 +3,7 @@ package HTTPAPI.NativeAPI;
 
 import com.google.gson.JsonObject;
 
+
 public class Internal extends APIObject{
 
 	/**
@@ -28,8 +29,18 @@ public class Internal extends APIObject{
 	{
 		String method="login";
 		JsonObject jsonObject=new JsonObject();
+		jsonObject.addProperty("password",pwd);
+		jsonObject.addProperty("username",user);
+		JsonObject res=httpapi(jsonObject, method, null);
+		if(!res.has("jwt")&&res.has("ERROR"))
+		{
+			String error=res.get("ERROR").toString();
+			if(error.indexOf("401 for URL")!=-1)
+			{
+				res.addProperty("ERRORCH", "”√ªß√˚√‹¬Î¥ÌŒÛ£°");
+			}
+		}
+		return res;
 		
-		
-		return null;
 	}
 }
