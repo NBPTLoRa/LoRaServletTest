@@ -17,7 +17,7 @@
     <servlet-name>LoRaQuery</servlet-name>
     <url-pattern>/query</url-pattern>
   </servlet-mapping>
-    <servlet>
+  <servlet>
     <servlet-name>Test</servlet-name>
     <servlet-class>lora.query.Test</servlet-class>
   </servlet>
