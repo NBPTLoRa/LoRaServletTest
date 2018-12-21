@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
 
+import lora.servletdo.DeviceADD;
+import lora.sqloperation.Sql;
+
 /**
  * Servlet implementation class doIns
  */
@@ -20,9 +23,11 @@ public class doIns extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
+	Sql sql;
     public doIns() {
         super();
         // TODO Auto-generated constructor stub
+        sql=new Sql();
     }
 
 	/**
@@ -43,7 +48,17 @@ public class doIns extends HttpServlet {
 			//根据操作类决定函数
 			switch (doOper) {
 			case "deviceADD":
-				
+				//sql获取总服务器的ip、
+				String mainServer="";
+				if(!request.getRemoteAddr().equals(mainServer))
+				{//是总服务器的调用
+					DeviceADD deviceADD=new DeviceADD();
+					deviceADD.add();
+				}
+				else
+				{//如果不是
+					
+				}
 				break;
 
 			default:
