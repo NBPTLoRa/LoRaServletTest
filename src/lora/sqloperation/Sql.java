@@ -18,7 +18,7 @@ public class Sql {
 		session = sessionFactory.openSession(); 
 	}
 		
-	 public String getDisServIP()
+	 public String getServerIP()
 	 {
 			 
 		 String start="me.gacl.mapping.userMapper.DistServIP";	
