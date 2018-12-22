@@ -4,7 +4,7 @@ package lora.sqloperation;
 import java.io.InputStream;
 import java.util.List;
 
-import SYT.domain.User;
+import me.gacl.domain.sever;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -17,62 +17,25 @@ public class Sql {
 		SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(is);
 		session = sessionFactory.openSession(); 
 	}
-	
-	public List<User> ALL()
-	{
-	    String start="SYT.mapping.userMapper.getAllUser";
-	    List<User> use=null;
-	    try
-	    {
-	    	use=session.selectList(start);
-	    }
-	    catch(Exception ex)
-	    {
-	    	use=null;
-	    }
-	    finally
-	    {
-	    	session.close();
-	    	return use;
-	    }
-	}
-	
-	public String Add(int id,String name,int age)
-	{
-	    String start="SYT.mapping.userMapper.addUser";
-	    User use =new User();
-	    try
-	    {
-	    	use.setId(id);
-	    	use.setName(name);
-	    	use.setAge(age);
-	    	session.insert(start, use);
-	        session.commit();
-	        session.close();
-			return "成功";
-	    }
-	    catch(Exception ex)
-	    {
-	    	session.close();
-	    	return "错误";
-	    }
-	}
-	
-	public String Delete(int id)
-	{
-	    String start="SYT.mapping.userMapper.delete";
-	    User use =new User();
-	    try
-	    {
-	    	session.delete(start, id);
-	        session.commit();
-	        session.close();
-			return "成功";
-	    }
-	    catch(Exception ex)
-	    {
-	    	session.close();
-	    	return "错误";
-	    }
-	}
+		
+	 public String getDisServIP()
+	 {
+			 
+		 String start="me.gacl.mapping.userMapper.DistServIP";	
+		 String ret;
+		 try 
+		 { 
+			 List<sever> lstUsers = session.selectList(start); 
+			 ret=lstUsers.toString().substring(1,lstUsers.toString().length()-1);
+			 session.close();
+			 return ret;
+		 }	
+		 catch(Exception ex)
+		 {
+			 ret="e"+ex.toString();
+			 session.close();
+			 return ret;
+		 }
+		 
+	 }
 }
