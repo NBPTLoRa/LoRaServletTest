@@ -32,7 +32,7 @@ public class Sql {
 		 }	
 		 catch(Exception ex)
 		 {
-			 ret="e"+ex.toString();
+			 ret="e:"+ex.toString();
 			 session.close();
 			 return ret;
 		 }
