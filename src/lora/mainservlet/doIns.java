@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import lora.servletdo.DeviceADD;
 import lora.sqloperation.Sql;
@@ -37,19 +38,29 @@ public class doIns extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.setContentType("application/json;charset=UTF-8");
 		PrintWriter out=response.getWriter();
+		
+		//操作ID
 		String operID=request.getParameter("operID");
+		//操作Key
 		String operKey=request.getParameter("operKey");
-		String doOper;
+		//操作
+		String doOper=request.getParameter("doOper");
+		//返回的Json
 		JsonObject retJ=new JsonObject();
+		JsonParser jsonParser=new JsonParser();
 		try
 		{
-			//从指令库中获取操作类-
-			doOper="";
 			//根据操作类决定函数
 			switch (doOper) {
-			case "deviceADD":
+			case "deviceADD"://增加节点，由MainServer直接操作，不经过用户
 				//sql获取总服务器的ip、
-				String mainServer="";
+				String mainServer="";//sql.getServerIP();
+				if(mainServer.substring(0,1).equals("e"))
+				{//如果报错获取总服务器IP报错
+					out.print(mainServer+"-->MainServerGetIPERROR");
+					break;
+				}
+				
 				if(!request.getRemoteAddr().equals(mainServer))
 				{//是总服务器的调用
 					DeviceADD deviceADD=new DeviceADD();
@@ -57,7 +68,7 @@ public class doIns extends HttpServlet {
 				}
 				else
 				{//如果不是
-					
+					out.print("e:Your address has no permission.YouAddr:"+request.getRemoteAddr());
 				}
 				break;
 
@@ -73,6 +84,22 @@ public class doIns extends HttpServlet {
 		}
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
