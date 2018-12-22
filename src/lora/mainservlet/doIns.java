@@ -54,7 +54,7 @@ public class doIns extends HttpServlet {
 			switch (doOper) {
 			case "deviceADD"://增加节点，由MainServer直接操作，不经过用户
 				//sql获取总服务器的ip、
-				String mainServer="";//sql.getServerIP();
+				String mainServer=sql.getServerIP();
 				if(mainServer.substring(0,1).equals("e"))
 				{//如果报错获取总服务器IP报错
 					out.print(mainServer+"-->MainServerGetIPERROR");
