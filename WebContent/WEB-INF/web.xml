@@ -9,20 +9,14 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+
   <servlet>
-    <servlet-name>LoRaQuery</servlet-name>
-    <servlet-class>lora.query.LoRaQuery</servlet-class>
+    <servlet-name>doIns</servlet-name>
+    <servlet-class>lora.mainservlet.doIns</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>LoRaQuery</servlet-name>
-    <url-pattern>/query</url-pattern>
+    <servlet-name>doIns</servlet-name>
+    <url-pattern>/do</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <servlet-name>Test</servlet-name>
-    <servlet-class>lora.query.Test</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Test</servlet-name>
-    <url-pattern>/aa</url-pattern>
-  </servlet-mapping>
+
 </web-app>
