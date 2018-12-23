@@ -66,7 +66,6 @@ public class doIns extends HttpServlet {
 					break;
 				}
 				String addr=getIpAddr(request);
-				mainServer="10.201.5.49";
 				if(addr.equals(mainServer))
 				{//是总服务器的调用
 					out.print("AA");
@@ -81,7 +80,7 @@ public class doIns extends HttpServlet {
 				break;
 
 			default:
-				out.print("e:noDO!");
+				out.print("e:000This is not any enforceable act。");
 				break;
 			}
 			
