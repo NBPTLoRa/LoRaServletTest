@@ -41,12 +41,14 @@ public class doIns extends HttpServlet {
 		response.setContentType("application/json;charset=UTF-8");
 		PrintWriter out=response.getWriter();
 		
-		//操作ID
-		String operID=request.getParameter("operID");
-		//操作Key
-		String operKey=request.getParameter("operKey");
-		//操作
-		String doOper=request.getParameter("doOper");
+		String operID=request.getParameter("operID");	//操作ID
+		String operKey=request.getParameter("operKey");	//操作Key
+		String doOper=request.getParameter("doOper");	//要做的操作
+		
+		String devEui=request.getParameter("devEui");	//设备ID
+		String app=request.getParameter("app");			//设备类型
+		
+		
 		//返回的Json
 		JsonObject retJ=new JsonObject();
 		JsonParser jsonParser=new JsonParser();
@@ -57,7 +59,7 @@ public class doIns extends HttpServlet {
 			//根据操作类决定函数
 			switch (doOper) {
 			case "deviceADD"://增加节点，由MainServer直接操作，不经过用户
-				//response.setContentType(arg0);
+				response.setContentType("html/text;charset=UTF-8");
 				//sql获取总服务器的ip、
 				String mainServer=sql.getServerIP();
 				if(mainServer.substring(0,1).equals("e"))
@@ -67,7 +69,7 @@ public class doIns extends HttpServlet {
 				}
 				String addr=getIpAddr(request);
 				if(addr.equals(mainServer))
-				{//是总服务器的调用
+				{//是总服务器的调用增加API
 					out.print("AA");
 					//DeviceADD deviceADD=new DeviceADD();
 					//deviceADD.add();
