@@ -62,7 +62,8 @@ public class doIns extends HttpServlet {
 				response.setContentType("html/text;charset=UTF-8");
 				//sql获取总服务器的ip、
 				String mainServer=sql.getServerIP();
-				if(mainServer.substring(0,1).equals("e"))
+				//if(mainServer.substring(0,1).equals("e"))
+				if(true)//测试阶段直接通过
 				{//如果报错获取总服务器IP报错
 					out.print("e:"+mainServer+"-->MainServerGetIPERROR");
 					break;

@@ -7,7 +7,7 @@
             <!-- 配置数据库连接信息 -->
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver" />
-                <property name="url" value="jdbc:mysql://localhost:3306/LoRaHWDB" />
+                <property name="url" value="jdbc:mysql://47.101.172.221:3306/LoRaHWDB" />
                 <property name="username" value="test" />
                 <property name="password" value="826M4XqSdZvqtioH" />
             </dataSource>
