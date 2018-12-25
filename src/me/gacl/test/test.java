@@ -8,7 +8,6 @@ public class test {
 		// TODO Auto-generated method stub
 		Sql sql=new Sql();
     	System.out.println(sql.getServerIP());
-    	System.out.println(sql.getServerIP());
 	}
 
 }
