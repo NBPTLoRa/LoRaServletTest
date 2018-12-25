@@ -37,7 +37,6 @@ public class doIns extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.setContentType("application/json;charset=UTF-8");
 		PrintWriter out=response.getWriter();
 		
@@ -48,6 +47,7 @@ public class doIns extends HttpServlet {
 		String devEui=request.getParameter("devEui");	//设备ID
 		String app=request.getParameter("app");			//设备类型
 		
+		String retString="e:Create";//
 		
 		//返回的Json
 		JsonObject retJ=new JsonObject();
