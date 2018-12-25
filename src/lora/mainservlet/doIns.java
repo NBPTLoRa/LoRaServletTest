@@ -60,26 +60,27 @@ public class doIns extends HttpServlet {
 			switch (doOper) {
 			case "deviceADD"://增加节点，由MainServer直接操作，不经过用户
 				response.setContentType("html/text;charset=UTF-8");
+				
 				//sql获取总服务器的ip、
 				String mainServer=sql.getServerIP();
 				//if(mainServer.substring(0,1).equals("e"))
-				if(true)//测试阶段直接通过
+				if(true)	//测试阶段直接通过
 				{//如果报错获取总服务器IP报错
-					out.print("e:"+mainServer+"-->MainServerGetIPERROR");
+					retString="e:"+mainServer+"-->MainServerGetIPERROR";
 					break;
 				}
 				String addr=getIpAddr(request);
 				if(addr.equals(mainServer))
 				{//是总服务器的调用增加API
-					out.print("AA");
+					retString="AA";
 					//DeviceADD deviceADD=new DeviceADD();
 					//deviceADD.add();
 				}
 				else
 				{//如果不是
-					out.print("e:Your address has no permission.YouAddr:"+addr);
+					retString="e:Your address has no permission.YouAddr:"+addr;
 				}
-				
+				out.print(retString);
 				break;
 
 			default:
@@ -92,6 +93,9 @@ public class doIns extends HttpServlet {
 		{
 			e.printStackTrace();
 		}
+		
+		
+		
 	}
 
 	

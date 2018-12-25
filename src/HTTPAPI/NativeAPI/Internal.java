@@ -15,7 +15,7 @@ public class Internal extends APIObject{
 	public Internal(String url)
 	{
 		this.classify="internal";
-		this.url="https://"+url+"/api/";
+		this.url=this.protH+"://"+url+"/api/";
 	}
 	
 	/**
@@ -31,7 +31,7 @@ public class Internal extends APIObject{
 		JsonObject jsonObject=new JsonObject();
 		jsonObject.addProperty("password",pwd);
 		jsonObject.addProperty("username",user);
-		JsonObject res=httpapi(jsonObject, method, null);
+		JsonObject res=httpPostApi(jsonObject, method, null);
 		if(!res.has("jwt")&&res.has("ERROR"))
 		{
 			String error=res.get("ERROR").toString();

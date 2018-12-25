@@ -6,7 +6,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -17,20 +20,18 @@ import javax.net.ssl.X509TrustManager;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import com.mysql.jdbc.StringUtils;
+import com.squareup.moshi.JsonReader.Token;
 
 
 class APIObject {
+	
 	//https://66.42.65.86:8080/api/internal/login
-	//工具类类型:internal
-	protected String classify;
-	//url:https://66.42.65.86:8080/api/
-	protected String url;
 	
-	
-	
-	
-	
-	
+	protected String classify;			//工具类类型:internal
+	protected String url;				//url:https://66.42.65.86:8080/api/
+	protected String protH="http";		//连接协议：默认http
 	
 	
 	private static void trustAllHosts() {
@@ -60,7 +61,9 @@ class APIObject {
         }
     };
     
-	protected JsonObject httpapi(JsonObject jsonObject,String method,String[] parameters)
+    
+    //Post函数
+	protected JsonObject httpPostApi(JsonObject jsonObject,String method,String[] parameters)
 	{
 		
 		/*
@@ -74,8 +77,16 @@ class APIObject {
         BufferedReader in = null;
         HttpURLConnection conn;
         try {
-            trustAllHosts();
-            URL realUrl = new URL(url+classify+"/"+method);
+            trustAllHosts();//https协议下使用
+            if(!method.equals(""))
+            {//如果不与类同名，也就是细分函数
+            	method="/"+method;
+            }
+            URL realUrl = new URL(url+classify+method);
+            
+            //这一段空出来的地方加url？后面的parameters
+            
+            
             // 通过请求地址判断请求类型(http或者是https)
             if (realUrl.getProtocol().toLowerCase().equals("https")) {
                 HttpsURLConnection https = (HttpsURLConnection) realUrl.openConnection();
@@ -122,4 +133,64 @@ class APIObject {
         }
         return retj;
 	}
+
+
+	//Get函数，也就是不需要输入Json
+	protected JsonObject httpGetApi(String method,String[] parameters,String token) throws JsonSyntaxException, Exception
+	{
+		
+		/*
+		curl -X GET 
+		--header 'Accept: application/json' 
+		--header 'Grpc-Metadata-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJsb3JhLWFwcC1zZXJ2ZXIiLCJleHAiOjE1NDU4Mzg0ODcsImlzcyI6ImxvcmEtYXBwLXNlcnZlciIsIm5iZiI6MTU0NTc1MjA4Nywic3ViIjoidXNlciIsInVzZXJuYW1lIjoiYWRtaW4ifQ.2NjBycrupiY5SUkiFvrJ3N33L7GUjjw6Ih0pMRutxHk' 
+		'http://47.101.172.221:8080/api/devices'
+		 */
+		
+		JsonObject retJ=new JsonObject();
+		Map<String, String> headers = new HashMap<>();
+     headers.put("Accept", "application/json");
+      headers.put("Content-Type", "application/json");
+      headers.put("Authorization", "Bearer " + token);
+      //  headers.put("Accept", "text/xml");
+   //  headers.put("Content-Type", "application/x-www-form-urlencoded");
+        retJ=new JsonParser().parse(sendHttp("http://"+this.url, null, headers, "Get", null)).getAsJsonObject();
+        return retJ;
+	}
+	
+    public String sendHttp(String url, String param, Map<String, String> headers, String GetorPost, Integer timeOut) throws Exception {
+    	GetorPost = GetorPost == null ? "GET" : GetorPost;
+        PrintWriter out = null;
+        BufferedReader in = null;
+        String result = "";
+
+        if (!StringUtils.isNullOrEmpty(param) && "GET".equalsIgnoreCase(GetorPost)) {
+            url = url + "?" + param;
+        }
+        URL realUrl = new URL(url);
+        URLConnection conn = realUrl.openConnection();
+        if (timeOut != null && timeOut > 0) {
+            conn.setReadTimeout(timeOut * 1000);
+        }
+        HttpURLConnection httpURLConnection = (HttpURLConnection) conn;
+        httpURLConnection.setRequestMethod(GetorPost.toUpperCase());
+        for (Map.Entry<String, String> header : headers.entrySet()) {
+            httpURLConnection.setRequestProperty(header.getKey(), header.getValue());
+        }
+        conn.setDoInput(true);
+        if (!StringUtils.isNullOrEmpty(param) && "POST".equalsIgnoreCase(GetorPost)) {
+            conn.setDoOutput(true);
+            out = new PrintWriter(conn.getOutputStream());
+
+            out.print(param);
+            out.flush();
+        }
+
+        httpURLConnection.connect();
+        in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+        String line;
+        while ((line = in.readLine()) != null) {
+            result += line;
+        }
+        return result;
+    }
 }
