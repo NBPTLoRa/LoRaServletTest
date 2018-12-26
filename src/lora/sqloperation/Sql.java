@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.List;
 
 import me.gacl.domain.sever;
+import me.gacl.domain.profComparison;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -38,6 +40,32 @@ public class Sql {
 			 session.close();
 			 return ret;
 		 }
-		 
 	 }
+
+	 @SuppressWarnings("finally")
+	public String getDevProfIDforProfName(String name)
+	 {
+		 SqlSession session = sessionFactory.openSession(); 	 
+		 String start="me.gacl.mapping.userMapper.profComparisonName";	
+		 String ret="";
+		 try
+		 {
+			 profComparison pr=session.selectOne(start, name);
+			 if(pr!=null)
+			 {
+			    ret=pr.toString();
+			 }
+		 }
+		 catch(Exception ex)
+		 {
+			 ret="e:"+ex.toString();
+			 ex.printStackTrace();
+		 }
+		 finally
+		 {
+			 session.close();
+			 return ret;
+		 }
+	 }
+	 
 }
