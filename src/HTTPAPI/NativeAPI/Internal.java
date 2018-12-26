@@ -2,6 +2,7 @@ package HTTPAPI.NativeAPI;
 
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 
 public class Internal extends APIObject{
@@ -31,7 +32,7 @@ public class Internal extends APIObject{
 		JsonObject jsonObject=new JsonObject();
 		jsonObject.addProperty("password",pwd);
 		jsonObject.addProperty("username",user);
-		JsonObject res=httpPostApi(jsonObject, method, null);
+		JsonObject res=new JsonParser().parse(httpPostApi(jsonObject, method, null,null)).getAsJsonObject();
 		if(!res.has("jwt")&&res.has("ERROR"))
 		{
 			String error=res.get("ERROR").toString();
