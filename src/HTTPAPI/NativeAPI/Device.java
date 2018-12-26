@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.squareup.moshi.Json;
 
 public class Device extends APIObject {
@@ -17,9 +18,8 @@ public class Device extends APIObject {
 	public JsonObject deviceCount(String token)
 	{
 		String method="";
-		//String res=sendHttp(this.url+method, param, headers, GetorPost, timeOut)
 		
-		JsonObject resj=new JsonParser().parse("").getAsJsonObject();
+		JsonObject resj=httpGetApi(token);
 		return resj;
 		
 	}

@@ -1,6 +1,7 @@
 package HTTPAPI.doMethod;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 
 import HTTPAPI.NativeAPI.Device;
 import HTTPAPI.NativeAPI.Internal;

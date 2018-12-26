@@ -136,7 +136,7 @@ class APIObject {
 
 
 	//Get函数，也就是不需要输入Json
-	protected JsonObject httpGetApi(String method,String[] parameters,String token) throws JsonSyntaxException, Exception
+	protected JsonObject httpGetApi(String token)
 	{
 		
 		/*
@@ -153,7 +153,15 @@ class APIObject {
       headers.put("Authorization", "Bearer " + token);
       //  headers.put("Accept", "text/xml");
    //  headers.put("Content-Type", "application/x-www-form-urlencoded");
-        retJ=new JsonParser().parse(sendHttp("http://"+this.url, null, headers, "Get", null)).getAsJsonObject();
+        try {
+			retJ=new JsonParser().parse(sendHttp(this.url+"devices", null, headers, "GET", null)).getAsJsonObject();
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return retJ;
 	}
 	
