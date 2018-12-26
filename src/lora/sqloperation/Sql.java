@@ -6,6 +6,7 @@ import java.util.List;
 
 import me.gacl.domain.sever;
 import me.gacl.domain.profComparison;
+import me.gacl.domain.LoRaAddress;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -56,6 +57,54 @@ public class Sql {
 			    ret=pr.toString();
 			 }
 		 }
+		 catch(Exception ex)
+		 {
+			 ret="e:"+ex.toString();
+			 ex.printStackTrace();
+		 }
+		 finally
+		 {
+			 session.close();
+			 return ret;
+		 }
+	 }
+	 
+	 @SuppressWarnings("finally")
+	public String getIDPWDofLoRa()
+	 {
+		 SqlSession session = sessionFactory.openSession(); 	 
+		 String start="me.gacl.mapping.userMapper.getLoRaAddress";	
+		 String ret="";
+		 try 
+		 { 
+			 List<LoRaAddress> lstUsers = session.selectList(start); 
+			 String[] shu=lstUsers.toString().substring(1,lstUsers.toString().length()-1).split(",");
+			 ret=shu[0]+","+shu[1];
+		 }	
+		 catch(Exception ex)
+		 {
+			 ret="e:"+ex.toString();
+			 ex.printStackTrace();
+		 }
+		 finally
+		 {
+			 session.close();
+			 return ret;
+		 }
+	 }
+	 
+	 @SuppressWarnings("finally")
+	public String getLoRaAddr()
+	 {
+		 SqlSession session = sessionFactory.openSession(); 	 
+		 String start="me.gacl.mapping.userMapper.getLoRaAddress";	
+		 String ret="";
+		 try 
+		 { 
+			 List<LoRaAddress> lstUsers = session.selectList(start); 
+			 String[] shu=lstUsers.toString().substring(1,lstUsers.toString().length()-1).split(",");
+			 ret=shu[2];
+		 }	
 		 catch(Exception ex)
 		 {
 			 ret="e:"+ex.toString();

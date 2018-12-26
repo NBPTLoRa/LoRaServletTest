@@ -9,5 +9,9 @@
     <select id="profComparisonName" parameterType="String" resultType="me.gacl.domain.profComparison">
         select profID from profComparison where profName=#{profName}
     </select>  
-        
+    
+    <select id="getLoRaAddress" resultType="me.gacl.domain.LoRaAddress">
+        select * from LoRaAddress
+    </select>  
+     
 </mapper>
