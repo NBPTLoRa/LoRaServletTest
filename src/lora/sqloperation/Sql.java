@@ -2,11 +2,14 @@ package lora.sqloperation;
 
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import me.gacl.domain.sever;
 import me.gacl.domain.profComparison;
 import me.gacl.domain.LoRaAddress;
+import me.gacl.domain.instruction;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -117,4 +120,91 @@ public class Sql {
 		 }
 	 }
 	 
+	 @SuppressWarnings("finally")
+	public String setInsDeviceRX1(String insID,String insKey,String userID,String hwOpt,String devEui,String t)
+	 {
+		 SqlSession session = sessionFactory.openSession(); 	 
+		 String start="me.gacl.mapping.userMapper.add_instruction";	
+		 String ret="";
+		 try 
+		 {
+			 instruction ins =new instruction();
+			 ins.setInsID(insID);
+			 ins.setUserID(userID);
+			 ins.setOperationToken(insKey);
+			 SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd-HHmmss-SSS");
+			 ins.setCreateTime(df.format(new Date()));
+			 ins.setIsFin("0");
+			 ins.setHwOpt(hwOpt);
+			 ins.setReq("null");
+			 ins.setDevEui(devEui);
+			 ins.setT(t);
+			 ins.setSt("null");
+			 ins.setEt("null");
+			 int retResult = session.update(start,ins);
+			 session.commit();
+			 if(retResult==1)
+			 {
+				 ret="1";
+			 }
+			 else
+			 {
+				 ret="0";
+			 }
+		 }
+		 catch(Exception ex)
+		 {
+			 ret="e:"+ex.toString();
+			 ex.printStackTrace();
+		 }
+		 finally
+		 {
+			 session.close();
+			 return ret;
+		 }
+	 }
+	 
+	 @SuppressWarnings("finally")
+	public String setInsDeviceRX2(String insID,String insKey,String userID,String hwOpt,String devEui,String st,String et)
+	 {
+		 SqlSession session = sessionFactory.openSession(); 	 
+		 String start="me.gacl.mapping.userMapper.add_instruction";	
+		 String ret="";
+		 try 
+		 {
+			 instruction ins =new instruction();
+			 ins.setInsID(insID);
+			 ins.setUserID(userID);
+			 ins.setOperationToken(insKey);
+			 SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd-HHmmss-SSS");
+			 ins.setCreateTime(df.format(new Date()));
+			 ins.setIsFin("0");
+			 ins.setHwOpt(hwOpt);
+			 ins.setReq("null");
+			 ins.setDevEui(devEui);
+			 ins.setT("null");
+			 ins.setSt(st);
+			 ins.setEt(et);
+			 int retResult = session.update(start,ins);
+			 session.commit();
+			 if(retResult==1)
+			 {
+				 ret="1";
+			 }
+			 else
+			 {
+				 ret="0";
+			 }
+		 }
+		 catch(Exception ex)
+		 {
+			 ret="e:"+ex.toString();
+			 ex.printStackTrace();
+		 }
+		 finally
+		 {
+			 session.close();
+			 return ret;
+		 }
+	 }
 }

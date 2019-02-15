@@ -13,5 +13,9 @@
     <select id="getLoRaAddress" resultType="me.gacl.domain.LoRaAddress">
         select * from LoRaAddress
     </select>  
+    
+    <insert id="add_instruction" parameterType="me.gacl.domain.instruction">
+        insert into instruction values(#{insID},#{userID},#{operationToken},#{createTime},#{isFin},#{hwOpt},#{req},#{devEui},#{t},#{st},#{et})
+    </insert>  
      
 </mapper>
