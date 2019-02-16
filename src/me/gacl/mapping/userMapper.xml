@@ -15,7 +15,7 @@
     </select>  
     
     <insert id="add_instruction" parameterType="me.gacl.domain.instruction">
-        insert into instruction values(#{insID},#{userID},#{operationToken},#{createTime},#{isFin},#{hwOpt},#{req},#{devEui},#{t},#{st},#{et})
+        insert into instruction(insID,userID,operationToken,createTime,isFin,hwOpt,req,devEui,t,st,et) values(#{insID},#{userID},#{operationToken},#{createTime},#{isFin},#{hwOpt},#{req},#{devEui},#{t},#{st},#{et})
     </insert>  
      
 </mapper>
