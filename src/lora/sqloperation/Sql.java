@@ -136,11 +136,11 @@ public class Sql {
 			 ins.setCreateTime(df.format(new Date()));
 			 ins.setIsFin("0");
 			 ins.setHwOpt(hwOpt);
-			 ins.setReq("null");
+			 ins.setReq(null);
 			 ins.setDevEui(devEui);
 			 ins.setT(t);
-			 ins.setSt("null");
-			 ins.setEt("null");
+			 ins.setSt(null);
+			 ins.setEt(null);
 			 int retResult = session.update(start,ins);
 			 session.commit();
 			 if(retResult==1)
@@ -180,9 +180,9 @@ public class Sql {
 			 ins.setCreateTime(df.format(new Date()));
 			 ins.setIsFin("0");
 			 ins.setHwOpt(hwOpt);
-			 ins.setReq("null");
+			 ins.setReq(null);
 			 ins.setDevEui(devEui);
-			 ins.setT("null");
+			 ins.setT(null);
 			 ins.setSt(st);
 			 ins.setEt(et);
 			 int retResult = session.update(start,ins);
