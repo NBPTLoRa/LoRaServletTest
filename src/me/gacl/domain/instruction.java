@@ -80,4 +80,7 @@ public class instruction {
 		this.et = et;
 	}
 	
+    public String toString() {
+        return insID;
+    }
 }

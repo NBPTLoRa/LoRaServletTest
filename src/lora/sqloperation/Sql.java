@@ -207,4 +207,37 @@ public class Sql {
 			 return ret;
 		 }
 	 }
+	 
+	 @SuppressWarnings("finally")
+	public String hasSameInsPara(String insID,String operationToken)
+	 {
+		 SqlSession session = sessionFactory.openSession(); 	 
+	     String start="me.gacl.mapping.userMapper.select_insID_and_operationToken";	
+		 String ret="";
+		 try
+		 {
+			 instruction ins =new instruction();
+			 ins.setInsID(insID);
+			 ins.setOperationToken(operationToken);
+			 List<instruction> shuchu=session.selectList(start, ins);
+			 if(shuchu.toString()!="[]")
+			 {
+				 ret="1";
+			 }
+			 else
+			 {			 
+				 ret= "0";
+			 }
+		 } 
+		 catch(Exception ex)
+		 {
+			 ret= "e:"+ex.toString();
+			 ex.printStackTrace();
+		 }
+		 finally
+		 {
+			 session.close();
+			 return ret;
+		 }
+	 }
 }

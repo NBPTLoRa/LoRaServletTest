@@ -17,5 +17,9 @@
     <insert id="add_instruction" parameterType="me.gacl.domain.instruction">
         insert into instruction(insID,userID,operationToken,createTime,isFin,hwOpt,req,devEui,t,st,et) values(#{insID},#{userID},#{operationToken},#{createTime},#{isFin},#{hwOpt},#{req},#{devEui},#{t},#{st},#{et})
     </insert>  
+          
+     <select id="select_insID_and_operationToken" resultType="me.gacl.domain.instruction">
+        select insID,operationToken from instruction where insID=#{insID}and operationToken=#{operationToken}
+    </select>
      
 </mapper>
