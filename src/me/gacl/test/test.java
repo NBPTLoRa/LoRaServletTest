@@ -7,7 +7,7 @@ public class test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Sql sql=new Sql();
-    	System.out.println(sql.hasSameInsPara("77", "88"));
+    	System.out.println(sql.hasSameInsPara("88", "88"));
 	}
 
 }

@@ -81,6 +81,6 @@ public class instruction {
 	}
 	
     public String toString() {
-        return insID;
+        return hwOpt;
     }
 }

@@ -222,7 +222,7 @@ public class Sql {
 			 List<instruction> shuchu=session.selectList(start, ins);
 			 if(shuchu.toString()!="[]")
 			 {
-				 ret="1";
+				 ret=shuchu.toString().substring(1,shuchu.toString().length()-1);
 			 }
 			 else
 			 {			 
