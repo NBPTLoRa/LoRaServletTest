@@ -275,25 +275,24 @@ public class Sql {
 		 String table="device_frmpayload_data_temperature";
 		 String sqlcom="SELECT time,dev_eui,device_name,value FROM device_frmpayload_data_temperature where dev_eui = '"+devEui+"'and time>='"+shuzhu[0]+"' and time <='"+shuzhu[1]+"'";
 		 String database="LoRaDB";
-			Query query=new Query(sqlcom, database);
-			try {
-			QueryResult qs=iDB.query(query);
-
-			for(Result temp:qs.getResults())
-			{
-				List<Series> series = temp.getSeries();
-				for(Series serie : series){
-					List<List<Object>> values = serie.getValues();
-					for(List<Object> n : values){
-						ret.add(n.toString());
-					}
-				}
-			}
-			}
-			catch(Exception ex)
-			{
-				ret.add("0");
-			}
+	     Query query=new Query(sqlcom, database);
+	     try {
+	    	 QueryResult qs=iDB.query(query);
+	    	 for(Result temp:qs.getResults())
+	    	 	{ 
+	    		 	List<Series> series = temp.getSeries();
+	    		 	for(Series serie : series){
+	    		 		List<List<Object>> values = serie.getValues();
+	    		 		for(List<Object> n : values){
+	    		 			ret.add(n.toString());
+	    		 		}
+	    		 	}
+	    	 	 }
+	     	   }
+	      catch(Exception ex)
+		  {
+	    	  ret.add("0");
+		  }
 		 return ret;
 	 }
 	 
@@ -330,4 +329,40 @@ public class Sql {
 			 return ret;
 		 }
 	 }
+	 
+		@SuppressWarnings("finally")
+		public String setInsWorked(String insID,String operationToken,String insReq)
+		{
+			 SqlSession session = sessionFactory.openSession(); 	 
+		     String start="me.gacl.mapping.userMapper.up_isFin_and_req";	
+		     String ret="";
+		     try {
+				 instruction ins =new instruction();
+				 ins.setInsID(insID);
+				 ins.setOperationToken(operationToken);
+				 SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd-HHmmss");
+				 ins.setReq(df.format(new Date())+" "+insReq);
+				 ins.setIsFin("1");
+				 int retResult = session.update(start,ins);
+				 session.commit();
+				 if(retResult==1)
+				 {
+					 ret="1";
+				 }
+				 else
+				 {
+					 ret="0";
+				 }
+		     }
+			 catch(Exception ex)
+			 {
+				 ret= "e:"+ex.toString();
+				 ex.printStackTrace();
+			 }
+			 finally
+			 {
+				 session.close();
+				 return ret;
+			 }
+		}
 }
