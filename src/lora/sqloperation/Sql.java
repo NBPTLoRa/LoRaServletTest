@@ -2,8 +2,10 @@ package lora.sqloperation;
 
 
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -174,7 +176,7 @@ public class Sql {
 	 }
 	 
 	 @SuppressWarnings("finally")
-	public String setInsDeviceRX2(String insID,String insKey,String userID,String hwOpt,String devEui,String st,String et)
+	public String setInsDeviceRX2(String insID,String insKey,String userID,String hwOpt,String devEui,String et)
 	 {
 		 SqlSession session = sessionFactory.openSession(); 	 
 		 String start="me.gacl.mapping.userMapper.add_instruction";	
@@ -192,7 +194,7 @@ public class Sql {
 			 ins.setReq(null);
 			 ins.setDevEui(devEui);
 			 ins.setT(null);
-			 ins.setSt(st);
+			 ins.setSt(null);
 			 ins.setEt(et);
 			 int retResult = session.update(start,ins);
 			 session.commit();
@@ -250,14 +252,25 @@ public class Sql {
 		 }
 	 }
 	 
+	 public String newtime(String t)
+	 {
+		 int i=Integer.parseInt(t)*60;
+		 Calendar now=Calendar.getInstance();  
+		 now.add(Calendar.MINUTE,-(i));   
+		 SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd,HH:mm:ss.SSSSSS"); 
+		 String dateStr=sdf.format(now.getTimeInMillis());
+		 return dateStr;
+	 }
+	 
 	 public ArrayList<String> DB(String devEui,String t)
 	 {
 		 ArrayList<String> ret=new ArrayList<String>();
 		 String[] shuzhu=new String[2];
-		 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd,HH,:mm:ss.SSSSSS");
-		 String[]time=df.format(new Date()).split("-");
-		 shuzhu[0]=time[0]+"T"+String.format("%02d",(Integer.parseInt(time[1])-Integer.parseInt(t)))+time[2]+"Z";
-		 shuzhu[1]=time[0]+"T"+time[1]+time[2]+"Z";
+		 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd,HH:mm:ss.SSSSSS");
+		 String[] time_1=newtime(t).split(",");
+		 String[] time_2=df.format(new Date()).split(",");
+		 shuzhu[0]=time_1[0]+"T"+time_1[1]+"Z";
+		 shuzhu[1]=time_2[0]+"T"+time_2[1]+"Z";
 		 InfluxDB iDB=InfluxDBFactory.connect("http://47.101.172.221:8086", "admin", "admin");		
 		 String table="device_frmpayload_data_temperature";
 		 String sqlcom="SELECT time,dev_eui,device_name,value FROM device_frmpayload_data_temperature where dev_eui = '"+devEui+"'and time>='"+shuzhu[0]+"' and time <='"+shuzhu[1]+"'";
