@@ -223,7 +223,7 @@ public class Sql {
 	public String hasSameInsPara(String insID,String operationToken)
 	 {
 		 SqlSession session = sessionFactory.openSession(); 	 
-	     String start="me.gacl.mapping.userMapper.select_insID_and_operationToken";	
+	     String start="me.gacl.mapping.userMapper.select_hwOpt_and_isFin";	
 		 String ret="";
 		 try
 		 {
@@ -233,7 +233,15 @@ public class Sql {
 			 List<instruction> shuchu=session.selectList(start, ins);
 			 if(shuchu.toString()!="[]")
 			 {
-				 ret=shuchu.toString().substring(1,shuchu.toString().length()-1);
+				 String []shu=shuchu.toString().substring(1,shuchu.toString().length()-1).split(",");
+				 if(shu[0].equals("1"))
+				 {
+					 ret="1";
+				 }
+				 else if(shu[0].equals("0"))
+				 {
+					 ret=shu[1];
+				 }
 			 }
 			 else
 			 {			 

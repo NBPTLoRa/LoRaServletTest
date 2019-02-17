@@ -83,7 +83,7 @@ public class instruction {
     public String toString() {
     	if(hwOpt!=null)
     	{
-    		return hwOpt;
+    		return isFin+","+hwOpt;
     	}
     	else
     	{

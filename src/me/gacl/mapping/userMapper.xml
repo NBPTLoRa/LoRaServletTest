@@ -18,8 +18,8 @@
         insert into instruction(insID,userID,operationToken,createTime,isFin,hwOpt,req,devEui,t,st,et) values(#{insID},#{userID},#{operationToken},#{createTime},#{isFin},#{hwOpt},#{req},#{devEui},#{t},#{st},#{et})
     </insert>  
           
-     <select id="select_insID_and_operationToken" resultType="me.gacl.domain.instruction">
-        select hwOpt from instruction where insID=#{insID}and operationToken=#{operationToken}
+     <select id="select_hwOpt_and_isFin" resultType="me.gacl.domain.instruction">
+        select hwOpt,isFin from instruction where insID=#{insID}and operationToken=#{operationToken}
     </select>
     
      <select id="select_devEui_and_t" resultType="me.gacl.domain.instruction">
