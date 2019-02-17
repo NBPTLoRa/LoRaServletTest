@@ -21,5 +21,9 @@
      <select id="select_insID_and_operationToken" resultType="me.gacl.domain.instruction">
         select hwOpt from instruction where insID=#{insID}and operationToken=#{operationToken}
     </select>
+    
+        <select id="select_devEui_and_t" resultType="me.gacl.domain.instruction">
+        select devEui,t from instruction where insID=#{insID}and operationToken=#{operationToken}
+    </select>
      
 </mapper>

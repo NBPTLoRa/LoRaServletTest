@@ -81,6 +81,13 @@ public class instruction {
 	}
 	
     public String toString() {
-        return hwOpt;
+    	if(hwOpt!=null)
+    	{
+    		return hwOpt;
+    	}
+    	else
+    	{
+    		return devEui+","+t;
+    	}
     }
 }
