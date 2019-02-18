@@ -23,7 +23,10 @@ public class test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Sql sql=new Sql();
-		System.out.println(sql.hasSameInsPara("4249F54E7E19D9DDF6834F4C7E8AE597","78202E88C915ADAA83D542FD23AE77DA"));
+		 ArrayList<String> a=new  ArrayList<String> ();
+		 a=sql.getDeviceRX1("7A3EE254EC2412CFAE9D2700D96584BB","C17EF5DF91C3E293EB08D370F13B85AF");
+		for(String i:a)
+		System.out.println(i);
 	}
 
 }

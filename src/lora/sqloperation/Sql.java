@@ -292,7 +292,7 @@ public class Sql {
 	    		 	for(Series serie : series){
 	    		 		List<List<Object>> values = serie.getValues();
 	    		 		for(List<Object> n : values){
-	    		 			ret.add(n.toString().substring(1,n.toString().length()-1));
+	    		 			ret.add(kong(n.toString().substring(1,n.toString().length()-1)));
 	    		 		}
 	    		 	}
 	    	 	 }
@@ -302,6 +302,24 @@ public class Sql {
 	    	  ret.add("0");
 		  }
 		 return ret;
+	 }
+	 
+	 public String kong(String shuju)
+	 {
+		 String[]shu=shuju.split(",");
+		 String[]ret=new String[4];
+		 String re="";
+		 int t=0;
+		 for(String i:shu)
+		 {
+			 ret[t]=i.trim();		 
+			 t++;
+		 }
+		 for(int i=0;i<4;i++)
+		 {
+			 re+=ret[i]+",";
+		 }
+		 return re.substring(0, re.length()-1);
 	 }
 	 
 	 @SuppressWarnings("finally")
