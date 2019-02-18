@@ -292,7 +292,7 @@ public class Sql {
 	    		 	for(Series serie : series){
 	    		 		List<List<Object>> values = serie.getValues();
 	    		 		for(List<Object> n : values){
-	    		 			ret.add(n.toString());
+	    		 			ret.add(n.toString().substring(1,n.toString().length()-1));
 	    		 		}
 	    		 	}
 	    	 	 }

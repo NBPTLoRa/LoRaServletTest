@@ -81,7 +81,7 @@ public class instruction {
 	}
 	
     public String toString() {
-    	if(hwOpt!=null)
+    	if(hwOpt!=null )
     	{
     		return isFin+","+hwOpt;
     	}
