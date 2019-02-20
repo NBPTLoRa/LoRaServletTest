@@ -527,4 +527,92 @@ public class Sql {
 			  }
 			 return ret;
 		 }
+
+		 @SuppressWarnings("finally")
+			public String setInsUplinkRX1(String insID,String insKey,String userID,String hwOpt,String devEui,String t)
+			 {
+				 SqlSession session = sessionFactory.openSession(); 	 
+				 String start="me.gacl.mapping.userMapper.add_instruction";	
+				 String ret="";
+				 try 
+				 {
+					 instruction ins =new instruction();
+					 ins.setInsID(insID);
+					 ins.setUserID(userID);
+					 ins.setOperationToken(insKey);
+					 SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd-HHmmss-SSS");
+					 ins.setCreateTime(df.format(new Date()));
+					 ins.setIsFin("0");
+					 ins.setHwOpt(hwOpt);
+					 ins.setReq(null);
+					 ins.setDevEui(devEui);
+					 ins.setT(t);
+					 ins.setSt(null);
+					 ins.setEt(null);
+					 int retResult = session.update(start,ins);
+					 session.commit();
+					 if(retResult==1)
+					 {
+						 ret="1";
+					 }
+					 else
+					 {
+						 ret="0";
+					 }
+				 }
+				 catch(Exception ex)
+				 {
+					 ret="e:"+ex.toString();
+					 ex.printStackTrace();
+				 }
+				 finally
+				 {
+					 session.close();
+					 return ret;
+				 }
+			 }
+		 
+		 @SuppressWarnings("finally")
+			public String setInsUplinkRX2(String insID,String insKey,String userID,String hwOpt,String devEui,String t,String et)
+			 {
+				 SqlSession session = sessionFactory.openSession(); 	 
+				 String start="me.gacl.mapping.userMapper.add_instruction";	
+				 String ret="";
+				 try 
+				 {
+					 instruction ins =new instruction();
+					 ins.setInsID(insID);
+					 ins.setUserID(userID);
+					 ins.setOperationToken(insKey);
+					 SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd-HHmmss-SSS");
+					 ins.setCreateTime(df.format(new Date()));
+					 ins.setIsFin("0");
+					 ins.setHwOpt(hwOpt);
+					 ins.setReq(null);
+					 ins.setDevEui(devEui);
+					 ins.setT(t);
+					 ins.setSt(null);
+					 ins.setEt(et);
+					 int retResult = session.update(start,ins);
+					 session.commit();
+					 if(retResult==1)
+					 {
+						 ret="1";
+					 }
+					 else
+					 {
+						 ret="0";
+					 }
+				 }
+				 catch(Exception ex)
+				 {
+					 ret="e:"+ex.toString();
+					 ex.printStackTrace();
+				 }
+				 finally
+				 {
+					 session.close();
+					 return ret;
+				 }
+			 }
 }
