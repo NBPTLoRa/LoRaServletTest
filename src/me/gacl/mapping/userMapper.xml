@@ -29,5 +29,9 @@
     <update id="up_isFin_and_req" parameterType="me.gacl.domain.instruction">
         update instruction set isFin=#{isFin},req=#{req} where insID=#{insID} and operationToken=#{operationToken}
     </update>
+    
+         <select id="select_devEui_and_t_and_et" resultType="me.gacl.domain.instruction">
+        select devEui,t,et from instruction where insID=#{insID}and operationToken=#{operationToken}
+    </select>
      
 </mapper>

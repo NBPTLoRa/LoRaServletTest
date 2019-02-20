@@ -3,6 +3,7 @@ package lora.sqloperation;
 
 import java.io.InputStream;
 import java.text.DateFormat;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -432,4 +433,98 @@ public class Sql {
 			 return ret;
 		 }
 		 
+		 @SuppressWarnings("finally")
+			public ArrayList<String> getDeviceRX2(String insID,String operationToken)
+			 {
+				 SqlSession session = sessionFactory.openSession(); 	 
+			     String start="me.gacl.mapping.userMapper.select_devEui_and_t_and_et";	
+			     ArrayList<String> ret=new ArrayList<String>();
+				 try
+				 {
+					 instruction ins =new instruction();
+					 ins.setInsID(insID);
+					 ins.setOperationToken(operationToken);
+					 List<instruction> shuchu=session.selectList(start, ins);
+					 if(shuchu.toString()!="[]")
+					 {
+						 String[] shu=shuchu.toString().substring(1,shuchu.toString().length()-1).split(",");
+						 String []time=new String[2];
+						 String []t_1=newtime(shu[2],shu[1]).split(",");
+						 String []t_2=edtime(shu[2]).split(",");
+						 time[0]=t_1[0]+"T"+t_1[1]+"Z";
+						 time[1]=t_2[0]+"T"+t_2[1]+"Z";
+						 String sql="SELECT time,dev_eui,device_name,value FROM device_frmpayload_data_temperature where dev_eui = '"+shu[0]+"'and time>='"+time[0]+"' and time <='"+time[1]+"'";
+						 ret=Db(sql);
+					 }
+					 else
+					 {			 
+						 ret.add("0");
+					 }
+				 } 
+				 catch(Exception ex)
+				 {
+					 ret.add("e:"+ex.toString());
+					 ex.printStackTrace();
+				 }
+				 finally
+				 {
+					 session.close();
+					 return ret;
+				 }
+			 }
+		 
+		 public String newtime(String ed_time,String t)
+		 {
+		        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
+		        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd,HH:mm:ss.SSSSSS");
+		        // 将字符串的日期转为Date类型，ParsePosition(0)表示从第一个字符开始解析
+		        Date date = sdf.parse(ed_time, new ParsePosition(0));
+		        Calendar calendar = Calendar.getInstance();
+		        calendar.setTime(date);
+		        // add方法中的第二个参数n中，正数表示该日期后n天，负数表示该日期的前n天
+		        calendar.add(Calendar.HOUR_OF_DAY, -(Integer.parseInt(t)));
+				 String dateStr=df.format(calendar.getTimeInMillis());
+				return dateStr;
+		 }
+		 
+		 public String edtime(String ed_time)
+		 {
+		        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
+		        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd,HH:mm:ss.SSSSSS");
+		        Date date = sdf.parse(ed_time, new ParsePosition(0));
+		        Calendar calendar = Calendar.getInstance();
+		        calendar.setTime(date);
+				 String dateStr=df.format(calendar.getTimeInMillis());
+				return dateStr;
+		 }
+		 
+		 public ArrayList<String> Db(String sql)
+		 {
+			 ArrayList<String> ret=new ArrayList<String>();
+			 InfluxDB iDB=InfluxDBFactory.connect("http://47.101.172.221:8086", "admin", "admin");		
+			 if(iDB==null)
+			 {
+				 ret.add("e:连接失败");
+				 return ret;
+			 }
+			 Query query=new Query(sql, "LoRaDB");
+		     try {
+		    	 QueryResult qs=iDB.query(query);
+		    	 for(Result temp:qs.getResults())
+		    	 	{ 
+		    		 	List<Series> series = temp.getSeries();
+		    		 	for(Series serie : series){
+		    		 		List<List<Object>> values = serie.getValues();
+		    		 		for(List<Object> n : values){
+		    		 			ret.add(kong(n.toString().substring(1,n.toString().length()-1)));
+		    		 		}
+		    		 	}
+		    	 	 }
+		     	   }
+		      catch(Exception ex)
+			  {
+		    	  ret.add("0");
+			  }
+			 return ret;
+		 }
 }

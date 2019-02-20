@@ -85,6 +85,10 @@ public class instruction {
     	{
     		return isFin+","+hwOpt;
     	}
+    	else if(et!=null)
+    	{
+    		return devEui+","+t+","+et;
+    	}
     	else
     	{
     		return devEui+","+t;
