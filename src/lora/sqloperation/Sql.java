@@ -176,7 +176,7 @@ public class Sql {
 	 }
 	 
 	 @SuppressWarnings("finally")
-	public String setInsDeviceRX2(String insID,String insKey,String userID,String hwOpt,String devEui,String et)
+	public String setInsDeviceRX2(String insID,String insKey,String userID,String hwOpt,String devEui,String t,String et)
 	 {
 		 SqlSession session = sessionFactory.openSession(); 	 
 		 String start="me.gacl.mapping.userMapper.add_instruction";	
@@ -193,7 +193,7 @@ public class Sql {
 			 ins.setHwOpt(hwOpt);
 			 ins.setReq(null);
 			 ins.setDevEui(devEui);
-			 ins.setT(null);
+			 ins.setT(t);
 			 ins.setSt(null);
 			 ins.setEt(et);
 			 int retResult = session.update(start,ins);
@@ -269,45 +269,11 @@ public class Sql {
 		 String dateStr=sdf.format(now.getTimeInMillis());
 		 return dateStr;
 	 }
-	 
-	 public ArrayList<String> DB(String devEui,String t)
-	 {
-		 ArrayList<String> ret=new ArrayList<String>();
-		 String[] shuzhu=new String[2];
-		 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd,HH:mm:ss.SSSSSS");
-		 String[] time_1=newtime(t).split(",");
-		 String[] time_2=df.format(new Date()).split(",");
-		 shuzhu[0]=time_1[0]+"T"+time_1[1]+"Z";
-		 shuzhu[1]=time_2[0]+"T"+time_2[1]+"Z";
-		 InfluxDB iDB=InfluxDBFactory.connect("http://47.101.172.221:8086", "admin", "admin");		
-		 String table="device_frmpayload_data_temperature";
-		 String sqlcom="SELECT time,dev_eui,device_name,value FROM device_frmpayload_data_temperature where dev_eui = '"+devEui+"'and time>='"+shuzhu[0]+"' and time <='"+shuzhu[1]+"'";
-		 String database="LoRaDB";
-	     Query query=new Query(sqlcom, database);
-	     try {
-	    	 QueryResult qs=iDB.query(query);
-	    	 for(Result temp:qs.getResults())
-	    	 	{ 
-	    		 	List<Series> series = temp.getSeries();
-	    		 	for(Series serie : series){
-	    		 		List<List<Object>> values = serie.getValues();
-	    		 		for(List<Object> n : values){
-	    		 			ret.add(kong(n.toString().substring(1,n.toString().length()-1)));
-	    		 		}
-	    		 	}
-	    	 	 }
-	     	   }
-	      catch(Exception ex)
-		  {
-	    	  ret.add("0");
-		  }
-		 return ret;
-	 }
-	 
+	  
 	 public String kong(String shuju)
 	 {
 		 String[]shu=shuju.split(",");
-		 String[]ret=new String[4];
+		 String[]ret=new String[shu.length];
 		 String re="";
 		 int t=0;
 		 for(String i:shu)
@@ -315,7 +281,7 @@ public class Sql {
 			 ret[t]=i.trim();		 
 			 t++;
 		 }
-		 for(int i=0;i<4;i++)
+		 for(int i=0;i<ret.length;i++)
 		 {
 			 re+=ret[i]+",";
 		 }
@@ -337,7 +303,7 @@ public class Sql {
 			 if(shuchu.toString()!="[]")
 			 {
 				 String[] shu=shuchu.toString().substring(1,shuchu.toString().length()-1).split(",");
-				 ret=DB(shu[0],shu[1]);
+				 ret=DB(shu[0],shu[1],"device_frmpayload_data_temperature","time,dev_eui,device_name,value");
 			 }
 			 else
 			 {			 
@@ -391,4 +357,79 @@ public class Sql {
 				 return ret;
 			 }
 		}
+		
+		 
+		 @SuppressWarnings("finally")
+			public  ArrayList<String> getUplinkRX1(String insID,String operationToken)
+			 {
+			 SqlSession session = sessionFactory.openSession(); 	 
+		     String start="me.gacl.mapping.userMapper.select_devEui_and_t";	
+		     ArrayList<String> ret=new ArrayList<String>();
+			 try
+			 {
+				 instruction ins =new instruction();
+				 ins.setInsID(insID);
+				 ins.setOperationToken(operationToken);
+				 List<instruction> shuchu=session.selectList(start, ins);
+				 if(shuchu.toString()!="[]")
+				 {
+					 String[] shu=shuchu.toString().substring(1,shuchu.toString().length()-1).split(",");
+					 ret=DB(shu[0],shu[1],"device_uplink","time,dev_eui,device_name,dr,frequency,rssi,snr");
+				 }
+				 else
+				 {			 
+					 ret.add("0");
+				 }
+			 } 
+			 catch(Exception ex)
+			 {
+				 ret.add("e:"+ex.toString());
+				 ex.printStackTrace();
+			 }
+			 finally
+			 {
+				 session.close();
+				 return ret;
+			 }
+			 }
+		 
+		 
+		 public ArrayList<String> DB(String devEui,String t,String tab,String sj)
+		 {
+			 ArrayList<String> ret=new ArrayList<String>();
+			 String[] shuzhu=new String[2];
+			 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd,HH:mm:ss.SSSSSS");
+			 String[] time_1=newtime(t).split(",");
+			 String[] time_2=df.format(new Date()).split(",");
+			 shuzhu[0]=time_1[0]+"T"+time_1[1]+"Z";
+			 shuzhu[1]=time_2[0]+"T"+time_2[1]+"Z";
+			 InfluxDB iDB=InfluxDBFactory.connect("http://47.101.172.221:8086", "admin", "admin");		
+			 if(iDB==null)
+			 {
+				 ret.add("e:Á¬½ÓÊ§°Ü");
+				 return ret;
+			 }
+			 String sqlcom="SELECT "+sj+" FROM "+tab+" where dev_eui = '"+devEui+"'and time>='"+shuzhu[0]+"' and time <='"+shuzhu[1]+"'";
+			 String database="LoRaDB";
+		     Query query=new Query(sqlcom, database);
+		     try {
+		    	 QueryResult qs=iDB.query(query);
+		    	 for(Result temp:qs.getResults())
+		    	 	{ 
+		    		 	List<Series> series = temp.getSeries();
+		    		 	for(Series serie : series){
+		    		 		List<List<Object>> values = serie.getValues();
+		    		 		for(List<Object> n : values){
+		    		 			ret.add(kong(n.toString().substring(1,n.toString().length()-1)));
+		    		 		}
+		    		 	}
+		    	 	 }
+		     	   }
+		      catch(Exception ex)
+			  {
+		    	  ret.add("0");
+			  }
+			 return ret;
+		 }
+		 
 }
