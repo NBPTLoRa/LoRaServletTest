@@ -615,4 +615,44 @@ public class Sql {
 					 return ret;
 				 }
 			 }
+
+		 @SuppressWarnings("finally")
+			public ArrayList<String> getUplinkRX2(String insID,String operationToken)
+			 {
+				 SqlSession session = sessionFactory.openSession(); 	 
+			     String start="me.gacl.mapping.userMapper.select_devEui_and_t_and_et";	
+			     ArrayList<String> ret=new ArrayList<String>();
+				 try
+				 {
+					 instruction ins =new instruction();
+					 ins.setInsID(insID);
+					 ins.setOperationToken(operationToken);
+					 List<instruction> shuchu=session.selectList(start, ins);
+					 if(shuchu.toString()!="[]")
+					 {
+						 String[] shu=shuchu.toString().substring(1,shuchu.toString().length()-1).split(",");
+						 String []time=new String[2];
+						 String []t_1=newtime(shu[2],shu[1]).split(",");
+						 String []t_2=edtime(shu[2]).split(",");
+						 time[0]=t_1[0]+"T"+t_1[1]+"Z";
+						 time[1]=t_2[0]+"T"+t_2[1]+"Z";
+						 String sql="SELECT time,dev_eui,device_name,dr,frequency,rssi,snr FROM device_uplink where dev_eui = '"+shu[0]+"'and time>='"+time[0]+"' and time <='"+time[1]+"'";
+						 ret=Db(sql);
+					 }
+					 else
+					 {			 
+						 ret.add("0");
+					 }
+				 } 
+				 catch(Exception ex)
+				 {
+					 ret.add("e:"+ex.toString());
+					 ex.printStackTrace();
+				 }
+				 finally
+				 {
+					 session.close();
+					 return ret;
+				 }
+			 }
 }
