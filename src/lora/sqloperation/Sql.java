@@ -655,4 +655,32 @@ public class Sql {
 					 return ret;
 				 }
 			 }
+		 
+		 public String getDeviceLastCommu(String devEui)
+		 {
+			 String re = "";
+			 try
+			 {
+			 ArrayList<String> ret=new ArrayList<String>();
+			 String sql="select * from  device_uplink where dev_eui='"+devEui+"' order by time desc limit 1 ";
+			 ret=Db(sql);
+			 String [] shuju=new String[10];
+			 for(String i:ret)
+			 {
+				 shuju=i.split(",");
+			 }
+			 re=""+shuju[0].substring(0, 4)+shuju[0].substring(5,7)+shuju[0].substring(8,10)+"-"+shuju[0].substring(11,13)+shuju[0].substring(14,16)+shuju[0].substring(17,19);
+			 }
+			 catch(Exception ex)
+			 {
+				 re="e:"+ex.toString();
+				 ex.printStackTrace();
+			 }
+			 finally
+			 {
+				 return re;
+			 }
+
+		 }
+		 
 }
