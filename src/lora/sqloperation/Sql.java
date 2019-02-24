@@ -304,7 +304,7 @@ public class Sql {
 			 if(shuchu.toString()!="[]")
 			 {
 				 String[] shu=shuchu.toString().substring(1,shuchu.toString().length()-1).split(",");
-				 ret=DB(shu[0],shu[1],"device_frmpayload_data_temperature","time,dev_eui,device_name,value");
+				 ret=DB(shu[0],shu[1],"device_frmpayload_data_dataHex","time,dev_eui,device_name,value");
 			 }
 			 else
 			 {			 
@@ -359,7 +359,6 @@ public class Sql {
 			 }
 		}
 		
-		 
 		 @SuppressWarnings("finally")
 			public  ArrayList<String> getUplinkRX1(String insID,String operationToken)
 			 {
@@ -393,8 +392,7 @@ public class Sql {
 				 return ret;
 			 }
 			 }
-		 
-		 
+		 	 
 		 public ArrayList<String> DB(String devEui,String t,String tab,String sj)
 		 {
 			 ArrayList<String> ret=new ArrayList<String>();
@@ -453,7 +451,7 @@ public class Sql {
 						 String []t_2=edtime(shu[2]).split(",");
 						 time[0]=t_1[0]+"T"+t_1[1]+"Z";
 						 time[1]=t_2[0]+"T"+t_2[1]+"Z";
-						 String sql="SELECT time,dev_eui,device_name,value FROM device_frmpayload_data_temperature where dev_eui = '"+shu[0]+"'and time>='"+time[0]+"' and time <='"+time[1]+"'";
+						 String sql="SELECT time,dev_eui,device_name,value FROM device_frmpayload_data_dataHex where dev_eui = '"+shu[0]+"'and time>='"+time[0]+"' and time <='"+time[1]+"'";
 						 ret=Db(sql);
 					 }
 					 else

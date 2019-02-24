@@ -1,5 +1,6 @@
 package lora.influx;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,9 +17,10 @@ import com.google.gson.JsonObject;
 class Test{
 	public static void main(String[] args)
 	{
-		long stime=new Date().getTime();
+		ArrayList<String> ret=new ArrayList<String>();
+		//long stime=new Date().getTime();
 		InfluxDB iDB;
-		iDB=InfluxDBFactory.connect("http://167.179.83.38:8086", "admin", "admin");//注释
+		iDB=InfluxDBFactory.connect("http://47.101.172.221:8086", "admin", "admin");//注释
 		if(iDB!=null)
 		{
 			System.out.println("DATABASEConnectSuccess!!!!!"); 
@@ -27,23 +29,17 @@ class Test{
 			System.out.println("DATABASEConnectFialed!!!!!"); 
 		}
 		String database="LoRaDB";
-		String table="cpu";
-		String sqlcom="SELECT * FROM "+table;
+		String sqlcom="select * from  device_uplink order by time desc limit 1";
 		JsonObject jsonObject=new JsonObject();
 		Query query=new Query(sqlcom, database);
 		QueryResult qs=iDB.query(query);
-		jsonObject.addProperty("TableName", table);
-		int i=0;
 		for(Result temp:qs.getResults())
 		{
 			List<Series> series = temp.getSeries();
 			for(Series serie : series){
 				List<List<Object>> values = serie.getValues();
-				List<String> colums = serie.getColumns();
-				System.out.println("colums:" + colums);
 				for(List<Object> n : values){
-					System.out.println("value:"+i+++ n.toString());
-					jsonObject.addProperty("value",n.toString() );
+					System.out.println(n.toString().substring(1,n.toString().length()-1));
 				}
 			}
 		}
