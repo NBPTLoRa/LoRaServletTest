@@ -23,7 +23,7 @@ public class test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Sql sql=new Sql();
-		 System.out.println(sql.getDeviceLastCommu("d896e0ff00000240"));
+		 System.out.println(sql.getUplinkRXLast("d896e0ff00000253"));
 	}
 
 }

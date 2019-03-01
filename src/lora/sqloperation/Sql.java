@@ -654,7 +654,8 @@ public class Sql {
 				 }
 			 }
 		 
-		 public String getDeviceLastCommu(String devEui)
+		 @SuppressWarnings("finally")
+		public String getDeviceLastCommu(String devEui)
 		 {
 			 String re = "";
 			 try
@@ -678,7 +679,35 @@ public class Sql {
 			 {
 				 return re;
 			 }
-
+		 }
+		 
+		 @SuppressWarnings("finally")
+		public String getUplinkRXLast(String devEui)
+		 {
+			 String re = "";
+			 try
+			 {
+			 ArrayList<String> ret=new ArrayList<String>();
+			 String sql="select time,application_name,dr,frequency,rssi,snr from  device_uplink where dev_eui='"+devEui+"' order by time desc limit 1 ";
+			 ret=Db(sql);
+			 if(ret.toString().equals("[0]"))
+			 {
+				 re="00";
+			 }
+			 else
+			 {
+				 re="["+devEui+","+ret.toString().substring(1,ret.toString().length());
+			 }
+			 }
+			 catch(Exception ex)
+			 {
+				 re="e:"+ex.toString();
+				 ex.printStackTrace();
+			 }
+			 finally
+			 {
+				 return re;
+			 }
 		 }
 		 
 }
