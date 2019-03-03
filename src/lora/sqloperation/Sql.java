@@ -696,7 +696,7 @@ public class Sql {
 			 }
 			 else
 			 {
-				 re="["+devEui+","+ret.toString().substring(1,ret.toString().length());
+				 re=devEui+","+ret.toString().substring(1,ret.toString().length()-1);
 			 }
 			 }
 			 catch(Exception ex)
@@ -710,4 +710,33 @@ public class Sql {
 			 }
 		 }
 		 
+		 
+		 @SuppressWarnings("finally")
+		public String getUplinkRXLast2(String devEui,String count)
+		 {
+			 String re = "";
+			 try
+			 {
+			 ArrayList<String> ret=new ArrayList<String>();
+			 String sql="select time,device_name,value  from device_frmpayload_data_uplink where dev_eui = 'd896e0ff00000251' order by time desc limit 5";
+			 ret=Db(sql);
+			 if(ret.toString().equals("[0]"))
+			 {
+				 re="00";
+			 }
+			 else
+			 {
+				 re=devEui+","+ret.toString().substring(1,ret.toString().length()-1);
+			 }
+			 }
+			 catch(Exception ex)
+			 {
+				 re="e:"+ex.toString();
+				 ex.printStackTrace();
+			 }
+			 finally
+			 {
+				 return re;
+			 }
+		 }
 }
