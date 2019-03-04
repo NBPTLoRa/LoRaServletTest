@@ -36,7 +36,7 @@ public class doIns extends HttpServlet {
 	
 	//开发模式
 	//开发阶段时可以写为True，跳过检测主服务器IP地址
-	private static boolean devMode=false;
+	private static boolean devMode=true;
     /**
      * @see HttpServlet#HttpServlet()
      */
