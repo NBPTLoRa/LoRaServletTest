@@ -17,8 +17,6 @@ import org.omg.CORBA.PRIVATE_MEMBER;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import HTTPAPI.NativeAPI.Device;
-import HTTPAPI.NativeAPI.Internal;
 import lora.servletdo.DeviceADD;
 import lora.servletdo.DeviceDEL;
 import lora.servletdo.DeviceQueue;
@@ -26,7 +24,6 @@ import lora.servletdo.GatewayADD;
 import lora.servletdo.GatewayDEL;
 import lora.servletdo.Instructions;
 import lora.sqloperation.Sql;
-import me.gacl.domain.instruction;
 
 /**
  * Servlet implementation class doIns
@@ -36,7 +33,7 @@ public class doIns extends HttpServlet {
 	
 	//开发模式
 	//开发阶段时可以写为True，跳过检测主服务器IP地址
-	private static boolean devMode=true;
+	private static boolean devMode=false;
     /**
      * @see HttpServlet#HttpServlet()
      */
