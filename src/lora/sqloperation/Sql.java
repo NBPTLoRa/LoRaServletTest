@@ -525,6 +525,36 @@ public class Sql {
 			  }
 			 return ret;
 		 }
+		 
+		 public String Db_1(String sql)
+		 {
+			 String ret=new String();
+			 InfluxDB iDB=InfluxDBFactory.connect("http://47.101.172.221:8086", "admin", "admin");		
+			 if(iDB==null)
+			 {
+				 ret=("e:¡¨Ω” ß∞‹");
+				 return ret;
+			 }
+			 Query query=new Query(sql, "LoRaDB");
+		     try {
+		    	 QueryResult qs=iDB.query(query);
+		    	 for(Result temp:qs.getResults())
+		    	 	{ 
+		    		 	List<Series> series = temp.getSeries();
+		    		 	for(Series serie : series){
+		    		 		List<List<Object>> values = serie.getValues();
+		    		 		for(List<Object> n : values){
+		    		 			ret+=(kong(n.toString().substring(1,n.toString().length()-1))+"&&");
+		    		 		}
+		    		 	}
+		    	 	 }
+		     	   }
+		      catch(Exception ex)
+			  {
+		    	  ret="0";
+			  }
+			 return ret;
+		 }
 
 		 @SuppressWarnings("finally")
 			public String setInsUplinkRX1(String insID,String insKey,String userID,String hwOpt,String devEui,String t)
@@ -717,16 +747,16 @@ public class Sql {
 			 String re = "";
 			 try
 			 {
-			 ArrayList<String> ret=new ArrayList<String>();
-			 String sql="select time,device_name,value  from device_frmpayload_data_uplink where dev_eui = 'd896e0ff00000251' order by time desc limit 5";
-			 ret=Db(sql);
-			 if(ret.toString().equals("[0]"))
+			 String ret="";
+			 String sql="select time,device_name,value  from device_frmpayload_data_uplink where dev_eui = '"+devEui+"' order by time desc limit "+count;
+			 ret=Db_1(sql);
+			 if(ret.toString().equals("0"))
 			 {
 				 re="00";
 			 }
 			 else
 			 {
-				 re=devEui+","+ret.toString().substring(1,ret.toString().length()-1);
+				 re=devEui+","+ret.toString().substring(0,ret.toString().length()-2);
 			 }
 			 }
 			 catch(Exception ex)
