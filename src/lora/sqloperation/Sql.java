@@ -742,7 +742,7 @@ public class Sql {
 		 
 		 
 		 @SuppressWarnings("finally")
-		public String getUplinkRXLast2(String devEui,String count)
+		public String getUplinkRXLast2(String devEui,String count)//hhhdfdf
 		 {
 			 String re = "";
 			 try
