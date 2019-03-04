@@ -124,7 +124,11 @@ public class doIns extends HttpServlet {
 					retString=GetUplinkRXLast(response,request,sql, devMode);
 					out.print(retString);
 					break;
-					
+				case "getuplinklastpackage2":
+					System.out.println("[ServerMessage]DistServer: do-getUplinkLastPackage. IP="+addr+" userID="+userID);
+					retString=GetUplinkRXLast2(response,request,sql, devMode);
+					out.print(retString);
+					break;
 					
 				//OPT
 				case "opt":
@@ -167,6 +171,34 @@ public class doIns extends HttpServlet {
 		if(addr.equals(mainServer)||devMode)
 		{//是总服务器的话获取数据
 			retString=sql.getUplinkRXLast(devEui);
+		
+		}else
+		{//如果不是
+			retString="e:Your address has no permission.YouAddr:"+addr;
+		}
+		
+		return retString;
+	}
+	private static String GetUplinkRXLast2(HttpServletResponse response, HttpServletRequest request, Sql sql,
+			boolean devMode)
+	{
+		String retString="e:createGetUplinkRXLastDist";
+		response.setContentType("html/text;charset=UTF-8");
+		
+		String devEui=request.getParameter("devEui");
+		String count=request.getParameter("count");
+		
+		//sql获取总服务器的ip
+		String mainServer=sql.getServerIP();
+		if(mainServer.substring(0,1).equals("e"))
+		{//如果报错获取总服务器IP报错
+			retString="e:"+mainServer+"-->MainServerGetIPERROR";
+			return retString;
+		}
+		String addr=doIns.getIpAddr(request);
+		if(addr.equals(mainServer)||devMode)
+		{//是总服务器的话获取数据
+			retString=sql.getUplinkRXLast2(devEui,count);
 		
 		}else
 		{//如果不是
