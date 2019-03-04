@@ -32,7 +32,8 @@ public class Internal extends APIObject{
 		JsonObject jsonObject=new JsonObject();
 		jsonObject.addProperty("password",pwd);
 		jsonObject.addProperty("username",user);
-		JsonObject res=new JsonParser().parse(httpPostApi(jsonObject, method, null,null)).getAsJsonObject();
+		ResponseModel responseModel=httpPostApi(jsonObject, method, null,null);
+		JsonObject res=new JsonParser().parse(responseModel.getBody()).getAsJsonObject();
 		if(!res.has("jwt")&&res.has("ERROR"))
 		{
 			String error=res.get("ERROR").toString();

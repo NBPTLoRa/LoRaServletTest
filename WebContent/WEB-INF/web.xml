@@ -9,7 +9,6 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-
   <servlet>
     <servlet-name>doIns</servlet-name>
     <servlet-class>lora.mainservlet.doIns</servlet-class>
@@ -18,5 +17,13 @@
     <servlet-name>doIns</servlet-name>
     <url-pattern>/do</url-pattern>
   </servlet-mapping>
-
+  
+    <servlet>
+    <servlet-name>SetInstruction</servlet-name>
+    <servlet-class>lora.mainservlet.SetInstruction</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SetInstruction</servlet-name>
+    <url-pattern>/setIns</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -11,18 +11,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.annotations.Case;
+import org.omg.CORBA.PRIVATE_MEMBER;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import HTTPAPI.NativeAPI.Device;
+import HTTPAPI.NativeAPI.Internal;
 import lora.servletdo.DeviceADD;
+import lora.servletdo.DeviceDEL;
+import lora.servletdo.DeviceQueue;
+import lora.servletdo.GatewayADD;
+import lora.servletdo.GatewayDEL;
+import lora.servletdo.Instructions;
 import lora.sqloperation.Sql;
+import me.gacl.domain.instruction;
 
 /**
  * Servlet implementation class doIns
  */
 public class doIns extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	
+	//开发模式
+	//开发阶段时可以写为True，跳过检测主服务器IP地址
+	private static boolean devMode=false;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -40,50 +54,84 @@ public class doIns extends HttpServlet {
 		response.setContentType("application/json;charset=UTF-8");
 		PrintWriter out=response.getWriter();
 		
-		String operID=request.getParameter("operID");	//操作ID
-		String operKey=request.getParameter("operKey");	//操作Key
 		String doOper=request.getParameter("doOper");	//要做的操作
 		
 		String devEui=request.getParameter("devEui");	//设备ID
-		String app=request.getParameter("app");			//设备类型
+		String ProfName=request.getParameter("ProfName");//设备配置
+		String descrip=request.getParameter("descrip");	//设备备注
+		String devName=request.getParameter("devName");	//设备名称
+		String userID=request.getParameter("userID");	//用户ID
+		
+		String gatewayID=request.getParameter("gatewayID");			//网关ID
 		
 		String retString="e:Create";//
 		
 		//返回的Json
 		JsonObject retJ=new JsonObject();
 		JsonParser jsonParser=new JsonParser();
+		
+		String addr=doIns.getIpAddr(request);
 		try
 		{
 			if(doOper==null)
 				doOper="";
 			//根据操作类决定函数
-			switch (doOper) {
-			case "deviceADD"://增加节点，由MainServer直接操作，不经过用户
-				response.setContentType("html/text;charset=UTF-8");
-				
-				//sql获取总服务器的ip、
-				String mainServer=sql.getServerIP();
-				//if(mainServer.substring(0,1).equals("e"))
-				if(true)	//测试阶段直接通过
-				{//如果报错获取总服务器IP报错
-					retString="e:"+mainServer+"-->MainServerGetIPERROR";
+			
+			//转换成小写的
+			switch (doOper.toLowerCase()) 
+			{//增加节点，由MainServer直接操作，不经过用户
+				case "deviceadd":
+					System.out.println("[ServerMessage]DistServer: do-deviceAdd. IP="+addr+" userID="+userID);
+					retString=DeviceADD.deviceAdd(response, request, sql, descrip, devEui, ProfName, devName,devMode);
+					out.print(retString);
 					break;
-				}
-				String addr=getIpAddr(request);
-				if(addr.equals(mainServer))
-				{//是总服务器的调用增加API
-					retString="AA";
-					//DeviceADD deviceADD=new DeviceADD();
-					//deviceADD.add();
-				}
-				else
-				{//如果不是
-					retString="e:Your address has no permission.YouAddr:"+addr;
-				}
-				out.print(retString);
-				break;
-
+				//删除节点，由MainServer直接操作，不经过用户
+				case "devicedel":
+					System.out.println("[ServerMessage]DistServer: do-deviceDel. IP="+addr+" userID="+userID);
+					retString=DeviceDEL.devicedel(response, request, sql, devEui, devMode);
+					out.print(retString);
+					break;
+				//增加网关，由MainServer直接操作，不经过用户
+				case "gatewayadd":
+					System.out.println("[ServerMessage]DistServer: do-gatewayAdd. IP="+addr+" userID="+userID);
+					retString=GatewayADD.gatewayAdd(response, request, sql, gatewayID, descrip, devName, devMode);
+					out.print(retString);
+					break;
+				//删除网关，由MainServer直接操作，不经过用户	
+				case "gatewaydel":
+					System.out.println("[ServerMessage]DistServer: do-gatewayDel. IP="+addr+" userID="+userID);
+					retString=GatewayDEL.gatewayDel(response, request, sql, gatewayID,devMode);
+					out.print(retString);
+					break;
+				//增加队列
+				case "queueadd":
+					System.out.println("[ServerMessage]DistServer: do-queueAdd. IP="+addr+" userID="+userID);
+					retString=DeviceQueue.queueAdd(response,request,sql, devMode);
+					out.print(retString);
+					break;
+				case "queueget":
+					System.out.println("[ServerMessage]DistServer: do-queueGet. IP="+addr+" userID="+userID);
+					retString=DeviceQueue.queueGet(response,request,sql, devMode);
+					out.print(retString);
+					break;
+				case "queuedel":
+					System.out.println("[ServerMessage]DistServer: do-queueDel. IP="+addr+" userID="+userID);
+					retString=DeviceQueue.queueDel(response,request,sql, devMode);
+					out.print(retString);
+					break;
+				case "getuplinklastpackage":
+					System.out.println("[ServerMessage]DistServer: do-getUplinkLastPackage. IP="+addr+" userID="+userID);
+					retString=GetUplinkRXLast(response,request,sql, devMode);
+					out.print(retString);
+					break;
+					
+					
+				//OPT
+				case "opt":
+					Instructions.insDo(request, sql, out);
+					break;
 			default:
+				System.out.println("[ServerMessage]DistServer: do-default????. IP="+addr+" Query="+request.getQueryString());
 				out.print("e:000This is not any enforceable act。");
 				break;
 			}
@@ -92,6 +140,7 @@ public class doIns extends HttpServlet {
 		catch (Exception e)
 		{
 			e.printStackTrace();
+			out.print("e:"+e.getMessage());
 		}
 		
 		
@@ -99,6 +148,34 @@ public class doIns extends HttpServlet {
 	}
 
 	
+	private static String GetUplinkRXLast(HttpServletResponse response, HttpServletRequest request, Sql sql,
+			boolean devMode)
+	{
+		String retString="e:createGetUplinkRXLastDist";
+		response.setContentType("html/text;charset=UTF-8");
+		
+		String devEui=request.getParameter("devEui");
+		
+		//sql获取总服务器的ip
+		String mainServer=sql.getServerIP();
+		if(mainServer.substring(0,1).equals("e"))
+		{//如果报错获取总服务器IP报错
+			retString="e:"+mainServer+"-->MainServerGetIPERROR";
+			return retString;
+		}
+		String addr=doIns.getIpAddr(request);
+		if(addr.equals(mainServer)||devMode)
+		{//是总服务器的话获取数据
+			retString=sql.getUplinkRXLast(devEui);
+		
+		}else
+		{//如果不是
+			retString="e:Your address has no permission.YouAddr:"+addr;
+		}
+		
+		return retString;
+	}
+
 	public static String getIpAddr(HttpServletRequest request) {
         String ipAddress = request.getHeader("x-forwarded-for");
         if (ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
@@ -133,19 +210,14 @@ public class doIns extends HttpServlet {
         return ipAddress;
     }
 	
+	public static boolean getDevMode() {
+		return devMode;
+	}
 	
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
