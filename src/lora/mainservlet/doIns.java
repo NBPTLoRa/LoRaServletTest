@@ -78,14 +78,14 @@ public class doIns extends HttpServlet {
 			switch (doOper.toLowerCase()) 
 			{//增加节点，由MainServer直接操作，不经过用户
 				case "deviceadd":
-					System.out.println("[ServerMessage]DistServer: do-deviceAdd. IP="+addr+" userID="+userID);
 					retString=DeviceADD.deviceAdd(response, request, sql, descrip, devEui, ProfName, devName,devMode);
+					System.out.println("[ServerMessage]DistServer: do-deviceAdd. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
 				//删除节点，由MainServer直接操作，不经过用户
 				case "devicedel":
-					System.out.println("[ServerMessage]DistServer: do-deviceDel. IP="+addr+" userID="+userID);
 					retString=DeviceDEL.devicedel(response, request, sql, devEui, devMode);
+					System.out.println("[ServerMessage]DistServer: do-deviceDel. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
 				//增加网关，由MainServer直接操作，不经过用户

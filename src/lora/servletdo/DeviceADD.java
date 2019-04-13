@@ -37,7 +37,7 @@ public class DeviceADD {
 			String token=internal.login(userID, PWD).get("jwt").getAsString();
 			
 			Device device=new Device(loraAddr+":8080");
-			addReturn=device.deviceAdd("1", descrip, devEui, sql.getDevProfIDforProfName(ProfName), devName, token);
+			addReturn=device.deviceAdd("2", descrip, devEui, sql.getDevProfIDforProfName(ProfName), devName, token);
 			
 			if(addReturn.toString().equals("{}"))
 			{//Í¨¹ý
