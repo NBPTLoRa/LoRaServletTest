@@ -304,7 +304,7 @@ public class Sql {
 			 if(shuchu.toString()!="[]")
 			 {
 				 String[] shu=shuchu.toString().substring(1,shuchu.toString().length()-1).split(",");
-				 ret=DB(shu[0],shu[1],"device_frmpayload_data_dataHex","time,dev_eui,device_name,value");
+				 ret=DB(shu[0],shu[1],"device_uplink","time,dev_eui,device_name,value");
 			 }
 			 else
 			 {			 
@@ -374,7 +374,7 @@ public class Sql {
 				 if(shuchu.toString()!="[]")
 				 {
 					 String[] shu=shuchu.toString().substring(1,shuchu.toString().length()-1).split(",");
-					 ret=DB(shu[0],shu[1],"device_uplink","time,dev_eui,device_name,dr,frequency,rssi,snr");
+					 ret=DB(shu[0],shu[1],"device_frmpayload_data_uplink","time,dev_eui,device_name,dr,frequency,rssi,snr");
 				 }
 				 else
 				 {			 
@@ -451,7 +451,7 @@ public class Sql {
 						 String []t_2=edtime(shu[2]).split(",");
 						 time[0]=t_1[0]+"T"+t_1[1]+"Z";
 						 time[1]=t_2[0]+"T"+t_2[1]+"Z";
-						 String sql="SELECT time,dev_eui,device_name,value FROM device_frmpayload_data_dataHex where dev_eui = '"+shu[0]+"'and time>='"+time[0]+"' and time <='"+time[1]+"'";
+						 String sql="SELECT time,dev_eui,device_name,value FROM device_uplink where dev_eui = '"+shu[0]+"'and time>='"+time[0]+"' and time <='"+time[1]+"'";
 						 ret=Db(sql);
 					 }
 					 else
@@ -664,7 +664,7 @@ public class Sql {
 						 String []t_2=edtime(shu[2]).split(",");
 						 time[0]=t_1[0]+"T"+t_1[1]+"Z";
 						 time[1]=t_2[0]+"T"+t_2[1]+"Z";
-						 String sql="SELECT time,dev_eui,device_name,dr,frequency,rssi,snr FROM device_uplink where dev_eui = '"+shu[0]+"'and time>='"+time[0]+"' and time <='"+time[1]+"'";
+						 String sql="SELECT time,dev_eui,device_name,dr,frequency,rssi,snr FROM device_frmpayload_data_uplink where dev_eui = '"+shu[0]+"'and time>='"+time[0]+"' and time <='"+time[1]+"'";
 						 ret=Db(sql);
 					 }
 					 else
@@ -718,7 +718,7 @@ public class Sql {
 			 try
 			 {
 			 ArrayList<String> ret=new ArrayList<String>();
-			 String sql="select time,application_name,dr,frequency,rssi,snr from  device_uplink where dev_eui='"+devEui+"' order by time desc limit 1 ";
+			 String sql="select time,application_name,dr,frequency,rssi,snr from  device_frmpayload_data_uplink where dev_eui='"+devEui+"' order by time desc limit 1 ";
 			 ret=Db(sql);
 			 if(ret.toString().equals("[0]"))
 			 {
