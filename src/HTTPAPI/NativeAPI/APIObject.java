@@ -96,7 +96,8 @@ class APIObject {
 				}
 				  
 			}
-			responseModel=sendHttp(this.url+classify+method+inputPra, jsonObject.toString(), headers, "POST", null);
+			String uString=this.url+classify+method+inputPra;
+			responseModel=sendHttp(uString, jsonObject.toString(), headers, "POST", null);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

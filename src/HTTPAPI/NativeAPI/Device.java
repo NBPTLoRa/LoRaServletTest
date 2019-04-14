@@ -64,7 +64,8 @@ public class Device extends APIObject {
 				"  }\r\n" + 
 				"}";
 		JsonObject dObject=new JsonParser().parse(KeyObj).getAsJsonObject();
-		JsonObject retJ=new JsonParser().parse(httpPostApi(dObject, devEui+"/Keys", null, token).getBody()).getAsJsonObject();
+		String s=httpPostApi(dObject, devEui+"/keys", null, token).getBody();
+		JsonObject retJ=new JsonParser().parse(s).getAsJsonObject();
 		return retJ;
 	}
 }
