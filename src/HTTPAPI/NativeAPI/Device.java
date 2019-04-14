@@ -55,7 +55,7 @@ public class Device extends APIObject {
 	}
 	
 	public JsonObject deviceKeysADD(String appKey,String devEui,String nwkKey,String token)
-	{
+	{//
 		String KeyObj="{\r\n" + 
 				"  \"deviceKeys\": {\r\n" + 
 				"    \"appKey\": \""+appKey+"\",\r\n" + 
