@@ -44,7 +44,7 @@ public class DeviceADD {
 				retString="1";
 			}else
 			{//不通过
-				retString="e:"+addReturn.toString();
+				retString="e:ADDERROR"+addReturn.toString();
 			}
 			addReturn=device.deviceKeysADD(appKey, devEui, nwkKey, token);
 			if(addReturn.toString().equals("{}"))
@@ -52,7 +52,7 @@ public class DeviceADD {
 				retString="1";
 			}else
 			{//不通过
-				retString+="e:"+addReturn.toString();
+				retString+="e:ADDKEYSERROR"+addReturn.toString();
 			}
 		}
 		else
