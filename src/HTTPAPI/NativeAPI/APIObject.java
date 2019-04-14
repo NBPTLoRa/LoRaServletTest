@@ -23,6 +23,8 @@ import javax.net.ssl.X509TrustManager;
 
 import com.google.gson.JsonObject;
 
+import jdk.nashorn.internal.ir.RuntimeNode.Request;
+
 
 class APIObject {
 	
@@ -62,11 +64,9 @@ class APIObject {
     
     
     //Post函数
-	
-    protected String httpPostApi(JsonObject jsonObject,String method,Map<String,String> param,String token)
+    protected ResponseModel httpPostApi(JsonObject jsonObject,String method,Map<String,String> param,String token)
 	{
-
-		String retS="";
+		ResponseModel responseModel=new ResponseModel();
 		try {
 	        if(method!=null)
 	        {//如果不与类同名，也就是细分函数
@@ -96,19 +96,20 @@ class APIObject {
 				}
 				  
 			}
-			retS = sendHttp(this.url+classify+method+inputPra, jsonObject.toString(), headers, "POST", null);
+			responseModel=sendHttp(this.url+classify+method+inputPra, jsonObject.toString(), headers, "POST", null);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			responseModel.setBody("e:"+e.getMessage());
 		}
-		return retS;
+		return responseModel;
 	}
 
 
 	//Get函数，也就是不需要输入Json
-	protected String httpGetApi(String method,Map<String,String> param,String token)
+	protected ResponseModel httpGetApi(String method,Map<String,String> param,String token)
 	{
-		String retS="";
+		ResponseModel responseModel=new ResponseModel();
 		try {
 	        if(method!=null)
 	        {//如果不与类同名，也就是细分函数
@@ -137,18 +138,51 @@ class APIObject {
 				}
 				  
 			}
-			retS = sendHttp(this.url+classify+method+inputPra,null, headers, "GET", null);
+			responseModel=sendHttp(this.url+classify+method+inputPra, null, headers, "GET", null);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			responseModel.setBody("e:"+e.getMessage());
 		}
-		return retS;
+		return responseModel;
 	}
 	
-    public String sendHttp(String url, String json, Map<String, String> headers, String GetorPost, Integer timeOut) throws Exception {
+	protected ResponseModel httpDelApi(String method,String token)
+	{
+		ResponseModel responseModel=new ResponseModel();
+		try {
+	        if(method!=null)
+	        {//如果不与类同名，也就是细分函数
+	        	method="/"+method;
+	        }
+	        else
+	        {
+	        	method="";
+	        }
+			
+	        //设定headers
+			Map<String, String> headers = new HashMap<>();
+			headers.put("Accept", "application/json");
+			headers.put("Content-Type", "application/json");
+			
+			if(token!=null)
+			{
+				headers.put("Authorization", "Bearer " + token);
+			}
+			responseModel=sendHttp(this.url+classify+method,null, headers, "DELETE", null);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			responseModel.setBody("e:"+e.getMessage());
+		}
+		return responseModel;
+	}
 
+	
+    public ResponseModel sendHttp(String url, String json, Map<String, String> headers, String RequestMode, Integer timeOut) throws Exception {
+    	ResponseModel responseModel=new ResponseModel();
         //trustAllHosts();//https协议下使用
-    	GetorPost = GetorPost == null ? "GET" : GetorPost;
+    	RequestMode=RequestMode.toUpperCase();
         PrintWriter out = null;
         BufferedReader in = null;
         String result = "";
@@ -159,21 +193,15 @@ class APIObject {
             conn.setReadTimeout(timeOut * 1000);
         }
         HttpURLConnection httpURLConnection = (HttpURLConnection) conn;
-        httpURLConnection.setRequestMethod(GetorPost.toUpperCase());
+        httpURLConnection.setRequestMethod(RequestMode.toUpperCase());
         for (Map.Entry<String, String> header : headers.entrySet()) {
             httpURLConnection.setRequestProperty(header.getKey(), header.getValue());
         }
         httpURLConnection.setDoInput(true);
-        if ("POST".equalsIgnoreCase(GetorPost)) {
+        if ("POST".equalsIgnoreCase(RequestMode)) {
         	httpURLConnection.setUseCaches(false);
         	httpURLConnection.setDoOutput(true);
-
-            //OutputStream out2 = new DataOutputStream(httpURLConnection.getOutputStream()) ;
-            
-            //out2.write(json.getBytes());
-            //out2.flush();
-            //out2.close();
-            
+        	
             byte[] writebytes = json.getBytes();
             httpURLConnection.setRequestProperty("Content-Length", String.valueOf(writebytes.length));
             OutputStream outwritestream = httpURLConnection.getOutputStream();
@@ -196,7 +224,23 @@ class APIObject {
         while ((line = in.readLine()) != null) {
             result += line;
         }
-        
-        return result;
+        responseModel.setCode(httpURLConnection.getResponseCode()+"");
+        responseModel.setBody(result);
+        return responseModel;
+    }
+    
+    /**
+     * 字符串转化成为16进制字符串
+     * @param s
+     * @return
+     */
+    public static String strTo16(String s) {
+        String str = "";
+        for (int i = 0; i < s.length(); i++) {
+            int ch = (int) s.charAt(i);
+            String s4 = Integer.toHexString(ch);
+            str = str + s4;
+        }
+        return str;
     }
 }

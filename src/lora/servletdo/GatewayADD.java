@@ -1,20 +1,23 @@
 package lora.servletdo;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
 
-import HTTPAPI.NativeAPI.Device;
+import HTTPAPI.NativeAPI.Gateway;
 import HTTPAPI.NativeAPI.Internal;
 import lora.mainservlet.doIns;
 import lora.sqloperation.Sql;
 
-public class DeviceADD {
-	public static String deviceAdd(HttpServletResponse response,HttpServletRequest request,Sql sql,String descrip,String devEui,String ProfName,String devName,String appKey,String nwkKey,boolean devMode)
+public class GatewayADD {
+	public static String gatewayAdd(HttpServletResponse response,HttpServletRequest request,Sql sql,String gateID,String description,String gateName,boolean devMode)
 	{
 		String retString="e:create";
-		response.setContentType("html/text;charset=UTF-8");
+		//response.setContentType("html/text;charset=UTF-8");
 		
 		//sql获取总服务器的ip、
 		String mainServer=sql.getServerIP();
@@ -36,23 +39,16 @@ public class DeviceADD {
 			Internal internal=new Internal(loraAddr+":8080");
 			String token=internal.login(userID, PWD).get("jwt").getAsString();
 			
-			Device device=new Device(loraAddr+":8080");
-			addReturn=device.deviceAdd("3", descrip, devEui, sql.getDevProfIDforProfName(ProfName), devName, token);
+			//获取token后的操作
+			Gateway gateway=new Gateway(loraAddr+":8080");
+			addReturn=gateway.gatewayadd(gateID, description, gateName, token);
 			
 			if(addReturn.toString().equals("{}"))
 			{//通过
 				retString="1";
 			}else
 			{//不通过
-				retString="e:ADDERROR"+addReturn.toString();
-			}
-			addReturn=device.deviceKeysADD(appKey, devEui, nwkKey, token);
-			if(addReturn.toString().equals("{}"))
-			{//通过
-				retString="1";
-			}else
-			{//不通过
-				retString+="e:ADDKEYSERROR"+addReturn.toString();
+				retString="e:"+addReturn.toString();
 			}
 		}
 		else

@@ -15,7 +15,7 @@ public class Device extends APIObject {
 	
 	public JsonObject deviceCount(String token)
 	{
-		JsonObject resj=new JsonParser().parse(httpGetApi(null,null,token)).getAsJsonObject();
+		JsonObject resj=new JsonParser().parse(httpGetApi(null,null,token).getBody()).getAsJsonObject();
 		return resj;
 		
 	}
@@ -24,7 +24,7 @@ public class Device extends APIObject {
 	{
 		Map<String, String> param=new HashMap<>();
 		param.put("limit", limit);
-		JsonObject resj=new JsonParser().parse(httpGetApi(null,param,token)).getAsJsonObject();
+		JsonObject resj=new JsonParser().parse(httpGetApi(null,param,token).getBody()).getAsJsonObject();
 		return resj;
 		
 	}
@@ -42,8 +42,29 @@ public class Device extends APIObject {
 				"  }\r\n" + 
 				"}";
 		JsonObject dObject=new JsonParser().parse(deviceObj).getAsJsonObject();
-		JsonObject retJ=new JsonParser().parse(httpPostApi(dObject, null, null, token)).getAsJsonObject();
+		JsonObject retJ=new JsonParser().parse(httpPostApi(dObject, null, null, token).getBody()).getAsJsonObject();
 		return retJ;
 		
+	}
+	
+	public JsonObject devicedel(String devEui,String token)
+	{
+		String ret=httpDelApi(devEui, token).getBody();
+		JsonObject retJ=new JsonParser().parse(ret).getAsJsonObject();
+		return retJ;
+	}
+	
+	public JsonObject deviceKeysADD(String appKey,String devEui,String nwkKey,String token)
+	{//
+		String KeyObj="{\r\n" + 
+				"  \"deviceKeys\": {\r\n" + 
+				"    \"appKey\": \""+appKey+"\",\r\n" + 
+				"    \"devEUI\": \""+devEui+"\",\r\n" + 
+				"    \"nwkKey\": \""+nwkKey+"\"\r\n" + 
+				"  }\r\n" + 
+				"}";
+		JsonObject dObject=new JsonParser().parse(KeyObj).getAsJsonObject();
+		JsonObject retJ=new JsonParser().parse(httpPostApi(dObject, devEui+"/Keys", null, token).getBody()).getAsJsonObject();
+		return retJ;
 	}
 }
