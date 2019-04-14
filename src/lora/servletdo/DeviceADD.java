@@ -11,7 +11,7 @@ import lora.mainservlet.doIns;
 import lora.sqloperation.Sql;
 
 public class DeviceADD {
-	public static String deviceAdd(HttpServletResponse response,HttpServletRequest request,Sql sql,String descrip,String devEui,String ProfName,String devName,boolean devMode)
+	public static String deviceAdd(HttpServletResponse response,HttpServletRequest request,Sql sql,String descrip,String devEui,String ProfName,String devName,String appKey,String nwkKey,boolean devMode)
 	{
 		String retString="e:create";
 		response.setContentType("html/text;charset=UTF-8");
@@ -45,6 +45,14 @@ public class DeviceADD {
 			}else
 			{//不通过
 				retString="e:"+addReturn.toString();
+			}
+			addReturn=device.deviceKeysADD(appKey, devEui, nwkKey, token);
+			if(addReturn.toString().equals("{}"))
+			{//通过
+				retString="1";
+			}else
+			{//不通过
+				retString+="e:"+addReturn.toString();
 			}
 		}
 		else

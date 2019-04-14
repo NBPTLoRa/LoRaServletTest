@@ -58,6 +58,8 @@ public class doIns extends HttpServlet {
 		String descrip=request.getParameter("descrip");	//设备备注
 		String devName=request.getParameter("devName");	//设备名称
 		String userID=request.getParameter("userID");	//用户ID
+		String appKey=request.getParameter("appKey");	//三元组密码1
+		String nwkKey=request.getParameter("nwkKey");	//三元组密码3
 		
 		String gatewayID=request.getParameter("gatewayID");			//网关ID
 		
@@ -78,7 +80,7 @@ public class doIns extends HttpServlet {
 			switch (doOper.toLowerCase()) 
 			{//增加节点，由MainServer直接操作，不经过用户
 				case "deviceadd":
-					retString=DeviceADD.deviceAdd(response, request, sql, descrip, devEui, ProfName, devName,devMode);
+					retString=DeviceADD.deviceAdd(response, request, sql, descrip, devEui, ProfName, devName,appKey,nwkKey,devMode);
 					System.out.println("[ServerMessage]DistServer: do-deviceAdd. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;

@@ -53,4 +53,18 @@ public class Device extends APIObject {
 		JsonObject retJ=new JsonParser().parse(ret).getAsJsonObject();
 		return retJ;
 	}
+	
+	public JsonObject deviceKeysADD(String appKey,String devEui,String nwkKey,String token)
+	{
+		String KeyObj="{\r\n" + 
+				"  \"deviceKeys\": {\r\n" + 
+				"    \"appKey\": \""+appKey+"\",\r\n" + 
+				"    \"devEUI\": \""+devEui+"\",\r\n" + 
+				"    \"nwkKey\": \""+nwkKey+"\"\r\n" + 
+				"  }\r\n" + 
+				"}";
+		JsonObject dObject=new JsonParser().parse(KeyObj).getAsJsonObject();
+		JsonObject retJ=new JsonParser().parse(httpPostApi(dObject, devEui+"/Keys", null, token).getBody()).getAsJsonObject();
+		return retJ;
+	}
 }
