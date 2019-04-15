@@ -18,6 +18,7 @@ public class DeviceQueue {
 		
 		String devEui=request.getParameter("devEui");
 		String data=request.getParameter("data");
+		String confirmed=request.getParameter("confirmed");
 		
 		//sql获取总服务器的ip、
 		String mainServer=sql.getServerIP();
@@ -41,7 +42,7 @@ public class DeviceQueue {
 			String token=internal.login(userID, PWD).get("jwt").getAsString();
 			HTTPAPI.NativeAPI.DeviceQueue queue=new HTTPAPI.NativeAPI.DeviceQueue(loraAddr+":8080");
 			
-			ResponseModel responseModel=queue.queuePost(token, devEui, data);
+			ResponseModel responseModel=queue.queuePost(token, devEui, data,confirmed);
 			
 			if(responseModel.getCode().equals("200"))
 			{//通过

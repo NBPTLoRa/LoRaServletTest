@@ -13,10 +13,10 @@ public class DeviceQueue extends APIObject{
 		this.url=this.protH+"://"+url+"/api/";
 	}
 	
-	public ResponseModel queuePost(String token,String devEui,String data){
+	public ResponseModel queuePost(String token,String devEui,String data,String confirmed){
 		String queueObj="{\r\n" + 
 				"  \"deviceQueueItem\": {\r\n" + 
-				"    \"confirmed\": false,\r\n" + 
+				"    \"confirmed\": "+confirmed+",\r\n" + 
 				"    \"data\": \""+encodeBase64(data)+"\",\r\n" + 
 				"    \"devEUI\": \""+devEui+"\",\r\n" + 
 				"    \"fCnt\": 0,\r\n" + 

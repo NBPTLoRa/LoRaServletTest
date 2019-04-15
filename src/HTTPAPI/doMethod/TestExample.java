@@ -19,9 +19,9 @@ public class TestExample {
 			String token=jsonObject.get("jwt").getAsString();
 			
 			//节点类
-			Device device=new Device("47.101.172.221:8080");
-			jsonObject=device.deviceKeysADD("077EE45C6E4564D96D76AE55AFD3AA89", "0000000000000001", "077EE45C6E4564D96D76AE55AFD3AA89", token);
-			System.out.println(jsonObject);
+			//Device device=new Device("47.101.172.221:8080");
+			//jsonObject=device.deviceKeysADD("077EE45C6E4564D96D76AE55AFD3AA89", "0000000000000001", "077EE45C6E4564D96D76AE55AFD3AA89", token);
+			//System.out.println(jsonObject);
 			//节点数量
 			//JsonObject jsonObject2=device.deviceCount(token);
 			//System.out.println(jsonObject2);
@@ -39,8 +39,13 @@ public class TestExample {
 			//Gateway gateway=new Gateway("47.101.172.221:8080");
 			//JsonObject jobj=gateway.gatewayadd("0000000000000001", "TestDesc", "TestGateway", token);
 			//System.out.print(jobj);
+			
 			//System.out.println("0123456789");
-			//System.out.println(DeviceQueue.encodeBase64("0123456789"));
+			//System.out.println(DeviceQueue.encodeBase64("111"));
+			
+			
+			DeviceQueue dq=new DeviceQueue("47.101.172.221:8080");
+			System.out.println(dq.queuePost(token, "0000000000000040", "111", "true").getBody());
 			
 			//System.out.println("aa".split("1").length+" "+"aa".split("1")[0]);
 		}
