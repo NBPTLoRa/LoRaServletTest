@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+  <properties resource="db.properties"/>
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC" />
-            <!-- 配置数据库连接信息 -->
+            <!-- 配置数据库连接信息666 -->
             <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.jdbc.Driver" />
-                <property name="url" value="jdbc:mysql://47.101.172.221:3306/LoRaHWDB" />
-                <property name="username" value="test" />
-                <property name="password" value="826M4XqSdZvqtioH" />
+                <property name="driver" value="${driver}" />
+                <property name="url" value="${url}" />
+                <property name="username" value="${name}" />
+                <property name="password" value="${password}" />
             </dataSource>
         </environment>
     </environments>   
