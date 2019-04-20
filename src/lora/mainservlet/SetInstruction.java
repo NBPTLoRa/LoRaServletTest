@@ -6,18 +6,10 @@ import java.util.Random;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import lora.servletdo.DeviceADD;
-import lora.servletdo.DeviceDEL;
-import lora.servletdo.GatewayADD;
-import lora.servletdo.GatewayDEL;
 import lora.setInsDo.SetDeviceRX;
 import lora.setInsDo.SetUplinkRX;
 import lora.sqloperation.Sql;
