@@ -89,43 +89,48 @@ public class doIns extends HttpServlet {
 					break;
 				//增加网关，由MainServer直接操作，不经过用户
 				case "gatewayadd":
-					System.out.println("[ServerMessage]DistServer: do-gatewayAdd. IP="+addr+" userID="+userID);
 					retString=GatewayADD.gatewayAdd(response, request, sql, gatewayID, descrip, devName, devMode);
+					System.out.println("[ServerMessage]DistServer: do-gatewayAdd. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
 				//删除网关，由MainServer直接操作，不经过用户	
 				case "gatewaydel":
-					System.out.println("[ServerMessage]DistServer: do-gatewayDel. IP="+addr+" userID="+userID);
 					retString=GatewayDEL.gatewayDel(response, request, sql, gatewayID,devMode);
+					System.out.println("[ServerMessage]DistServer: do-gatewayDel. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
 				//增加队列
 				case "queueadd":
-					System.out.println("[ServerMessage]DistServer: do-queueAdd. IP="+addr+" userID="+userID);
 					retString=DeviceQueue.queueAdd(response,request,sql, devMode);
+					System.out.println("[ServerMessage]DistServer: do-queueAdd. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
+				//队列获取
 				case "queueget":
-					System.out.println("[ServerMessage]DistServer: do-queueGet. IP="+addr+" userID="+userID);
 					retString=DeviceQueue.queueGet(response,request,sql, devMode);
+					System.out.println("[ServerMessage]DistServer: do-queueGet. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
 				case "queuedel":
-					System.out.println("[ServerMessage]DistServer: do-queueDel. IP="+addr+" userID="+userID);
 					retString=DeviceQueue.queueDel(response,request,sql, devMode);
+					System.out.println("[ServerMessage]DistServer: do-queueDel. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
 				case "getuplinklastpackage":
-					System.out.println("[ServerMessage]DistServer: do-getUplinkLastPackage. IP="+addr+" userID="+userID);
 					retString=GetUplinkRXLast(response,request,sql, devMode);
+					System.out.println("[ServerMessage]DistServer: do-getUplinkLastPackage. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
 				case "getuplinklastpackage2":
-					System.out.println("[ServerMessage]DistServer: do-getUplinkLastPackage. IP="+addr+" userID="+userID);
 					retString=GetUplinkRXLast2(response,request,sql, devMode);
+					System.out.println("[ServerMessage]DistServer: do-getUplinkLastPackage. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
-					
+				case "multicast-group-queue-post":
+					retString=MulticastGroupQueuePost(response,request,sql, devMode);
+					System.out.println("[ServerMessage]DistServer: do-MulticastGroupQueuePost. IP="+addr+" userID="+userID+" ret="+retString);
+					out.print(retString);
+					break;
 				//OPT
 				case "opt":
 					Instructions.insDo(request, sql, out);
@@ -238,14 +243,37 @@ public class doIns extends HttpServlet {
         return ipAddress;
     }
 	
+	private static String MulticastGroupQueuePost(HttpServletResponse response, HttpServletRequest request,
+			Sql sql,boolean devMode)
+	{
+		String retString="e:MulticastGroupQueuePost";
+		response.setContentType("html/text;charset=UTF-8");
+		
+		String devEui=request.getParameter("devEui");
+		
+		//sql获取总服务器的ip
+		String mainServer=sql.getServerIP();
+		if(mainServer.substring(0,1).equals("e"))
+		{//如果报错获取总服务器IP报错
+			retString="e:"+mainServer+"-->MainServerGetIPERROR";
+			return retString;
+		}
+		String addr=doIns.getIpAddr(request);
+		if(addr.equals(mainServer)||devMode)
+		{//是总服务器的话
+			retString=sql.getUplinkRXLast(devEui);
+		
+		}else
+		{//如果不是
+			retString="e:Your address has no permission.YouAddr:"+addr;
+		}
+		
+		return retString;
+	}
 	public static boolean getDevMode() {
 		return devMode;
 	}
 	
-	
-	
-	
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
