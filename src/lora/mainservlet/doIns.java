@@ -20,6 +20,7 @@ import lora.servletdo.DeviceQueue;
 import lora.servletdo.GatewayADD;
 import lora.servletdo.GatewayDEL;
 import lora.servletdo.Instructions;
+import lora.servletdo.MG_queuePOST;
 import lora.sqloperation.Sql;
 
 /**
@@ -127,7 +128,7 @@ public class doIns extends HttpServlet {
 					out.print(retString);
 					break;
 				case "multicast-group-queue-post":
-					retString=MulticastGroupQueuePost(response,request,sql, devMode);
+					retString=MG_queuePOST.queuePOST(response,request,sql, devMode);
 					System.out.println("[ServerMessage]DistServer: do-MulticastGroupQueuePost. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
@@ -243,34 +244,6 @@ public class doIns extends HttpServlet {
         return ipAddress;
     }
 	
-	private static String MulticastGroupQueuePost(HttpServletResponse response, HttpServletRequest request,
-			Sql sql,boolean devMode)
-	{
-		String retString="e:MulticastGroupQueuePost";
-		response.setContentType("html/text;charset=UTF-8");
-		
-		String devEui=request.getParameter("devEui");
-		
-		//sql获取总服务器的ip
-		String mainServer=sql.getServerIP();
-		if(mainServer.substring(0,1).equals("e"))
-		{//如果报错获取总服务器IP报错
-			retString="e:"+mainServer+"-->MainServerGetIPERROR";
-			return retString;
-		}
-		String addr=doIns.getIpAddr(request);
-		if(addr.equals(mainServer)||devMode)
-		{//是总服务器的话
-			retString=
-		
-		}
-		else
-		{//如果不是
-			retString="e:Your address has no permission.YouAddr:"+addr;
-		}
-		
-		return retString;
-	}
 	public static boolean getDevMode() {
 		return devMode;
 	}
