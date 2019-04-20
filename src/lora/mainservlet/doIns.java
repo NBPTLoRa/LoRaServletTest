@@ -261,9 +261,10 @@ public class doIns extends HttpServlet {
 		String addr=doIns.getIpAddr(request);
 		if(addr.equals(mainServer)||devMode)
 		{//是总服务器的话
-			retString=sql.getUplinkRXLast(devEui);
+			retString=
 		
-		}else
+		}
+		else
 		{//如果不是
 			retString="e:Your address has no permission.YouAddr:"+addr;
 		}
