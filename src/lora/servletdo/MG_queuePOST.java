@@ -42,7 +42,7 @@ public class MG_queuePOST {
 			String token=internal.login(userID, PWD).get("jwt").getAsString();
 			
 			MulticastGroup mGroup=new MulticastGroup(loraAddr+":8080");
-			addReturn=mGroup.queuePOSTofID(token, ID);
+			addReturn=mGroup.queuePOSTofID(token, "e4bc7bf7-6cc5-45bd-b3c5-d2911c1012a9");
 			
 			if(addReturn.toString().equals("{}"))
 			{//Í¨¹ý
