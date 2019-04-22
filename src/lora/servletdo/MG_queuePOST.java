@@ -19,6 +19,7 @@ public class MG_queuePOST {
 		response.setContentType("html/text;charset=UTF-8");
 		
 		String ID=request.getParameter("ID");		//操作ID
+		String data=request.getParameter("data");	//data
 		
 		
 		//sql获取总服务器的ip、
@@ -42,9 +43,9 @@ public class MG_queuePOST {
 			String token=internal.login(userID, PWD).get("jwt").getAsString();
 			
 			MulticastGroup mGroup=new MulticastGroup(loraAddr+":8080");
-			addReturn=mGroup.queuePOSTofID(token, "e4bc7bf7-6cc5-45bd-b3c5-d2911c1012a9");
+			addReturn=mGroup.queuePOSTofID(token,data, "e4bc7bf7-6cc5-45bd-b3c5-d2911c1012a9");
 			
-			if(addReturn.toString().equals("{}"))
+			if(addReturn.toString().indexOf("fCnt")>-1)
 			{//通过
 				retString="1";
 			}else
