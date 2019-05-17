@@ -6,13 +6,10 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.ibatis.annotations.Case;
-import org.omg.CORBA.PRIVATE_MEMBER;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -23,6 +20,7 @@ import lora.servletdo.DeviceQueue;
 import lora.servletdo.GatewayADD;
 import lora.servletdo.GatewayDEL;
 import lora.servletdo.Instructions;
+import lora.servletdo.MG_queuePOST;
 import lora.sqloperation.Sql;
 
 /**
@@ -92,43 +90,48 @@ public class doIns extends HttpServlet {
 					break;
 				//增加网关，由MainServer直接操作，不经过用户
 				case "gatewayadd":
-					System.out.println("[ServerMessage]DistServer: do-gatewayAdd. IP="+addr+" userID="+userID);
 					retString=GatewayADD.gatewayAdd(response, request, sql, gatewayID, descrip, devName, devMode);
+					System.out.println("[ServerMessage]DistServer: do-gatewayAdd. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
 				//删除网关，由MainServer直接操作，不经过用户	
 				case "gatewaydel":
-					System.out.println("[ServerMessage]DistServer: do-gatewayDel. IP="+addr+" userID="+userID);
 					retString=GatewayDEL.gatewayDel(response, request, sql, gatewayID,devMode);
+					System.out.println("[ServerMessage]DistServer: do-gatewayDel. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
 				//增加队列
 				case "queueadd":
-					System.out.println("[ServerMessage]DistServer: do-queueAdd. IP="+addr+" userID="+userID);
 					retString=DeviceQueue.queueAdd(response,request,sql, devMode);
+					System.out.println("[ServerMessage]DistServer: do-queueAdd. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
+				//队列获取
 				case "queueget":
-					System.out.println("[ServerMessage]DistServer: do-queueGet. IP="+addr+" userID="+userID);
 					retString=DeviceQueue.queueGet(response,request,sql, devMode);
+					System.out.println("[ServerMessage]DistServer: do-queueGet. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
 				case "queuedel":
-					System.out.println("[ServerMessage]DistServer: do-queueDel. IP="+addr+" userID="+userID);
 					retString=DeviceQueue.queueDel(response,request,sql, devMode);
+					System.out.println("[ServerMessage]DistServer: do-queueDel. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
 				case "getuplinklastpackage":
-					System.out.println("[ServerMessage]DistServer: do-getUplinkLastPackage. IP="+addr+" userID="+userID);
 					retString=GetUplinkRXLast(response,request,sql, devMode);
+					System.out.println("[ServerMessage]DistServer: do-getUplinkLastPackage. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
 				case "getuplinklastpackage2":
-					System.out.println("[ServerMessage]DistServer: do-getUplinkLastPackage. IP="+addr+" userID="+userID);
 					retString=GetUplinkRXLast2(response,request,sql, devMode);
+					System.out.println("[ServerMessage]DistServer: do-getUplinkLastPackage. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
-					
+				case "multicast-group-queue-post":
+					retString=MG_queuePOST.queuePOST(response,request,sql, devMode);
+					System.out.println("[ServerMessage]DistServer: do-MulticastGroupQueuePost. IP="+addr+" userID="+userID+" ret="+retString);
+					out.print(retString);
+					break;
 				//OPT
 				case "opt":
 					Instructions.insDo(request, sql, out);
@@ -245,10 +248,6 @@ public class doIns extends HttpServlet {
 		return devMode;
 	}
 	
-	
-	
-	
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
