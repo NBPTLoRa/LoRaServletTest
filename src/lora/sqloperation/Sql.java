@@ -784,7 +784,7 @@ public class Sql {
 				 re="00";
 			 }
 			 else
-			 {
+			 {//666
 				 re=devEui+","+ret.toString().substring(0,ret.toString().length()-2);
 			 }
 			 }
