@@ -124,9 +124,21 @@ public class doIns extends HttpServlet {
 					break;
 				case "getuplinklastpackage2":
 					retString=GetUplinkRXLast2(response,request,sql, devMode);
-					System.out.println("[ServerMessage]DistServer: do-getUplinkLastPackage. IP="+addr+" userID="+userID+" ret="+retString);
+					System.out.println("[ServerMessage]DistServer: do-getUplinkLastPackage2. IP="+addr+" userID="+userID+" ret="+retString);
 					out.print(retString);
 					break;
+					
+				case "getdeviceuplinklastpackage":
+					retString=GetDeviceUplinkRXLast(response,request,sql, devMode);
+					System.out.println("[ServerMessage]DistServer: do-getdeviceuplinklastpackage. IP="+addr+" userID="+userID+" ret="+retString);
+					out.print(retString);
+					break;
+				case "getdeviceuplinklastpackage2":
+					retString=GetDeviceUplinkRXLast2(response,request,sql, devMode);
+					System.out.println("[ServerMessage]DistServer: do-getdeviceuplinklastpackage2. IP="+addr+" userID="+userID+" ret="+retString);
+					out.print(retString);
+					break;
+					
 				case "multicast-group-queue-post":
 					retString=MG_queuePOST.queuePOST(response,request,sql, devMode);
 					System.out.println("[ServerMessage]DistServer: do-MulticastGroupQueuePost. IP="+addr+" userID="+userID+" ret="+retString);
@@ -154,6 +166,61 @@ public class doIns extends HttpServlet {
 	}
 
 	
+	private String GetDeviceUplinkRXLast2(HttpServletResponse response, HttpServletRequest request, Sql sql2,
+			boolean devMode2) {
+		String retString="e:createGetUplinkRXLastDist";
+		response.setContentType("html/text;charset=UTF-8");
+		
+		String devEui=request.getParameter("devEui");
+		String count=request.getParameter("count");
+		
+		//sql获取总服务器的ip
+		String mainServer=sql.getServerIP();
+		if(mainServer.substring(0,1).equals("e"))
+		{//如果报错获取总服务器IP报错
+			retString="e:"+mainServer+"-->MainServerGetIPERROR";
+			return retString;
+		}
+		String addr=doIns.getIpAddr(request);
+		if(addr.equals(mainServer)||devMode)
+		{//是总服务器的话获取数据
+			retString=sql.getDeviceUplinkRXLast(devEui,count);
+		
+		}else
+		{//如果不是
+			retString="e:Your address has no permission.YouAddr:"+addr;
+		}
+		
+		return retString;
+	}
+
+	private String GetDeviceUplinkRXLast(HttpServletResponse response, HttpServletRequest request, Sql sql2,
+			boolean devMode2) {
+		String retString="e:createGetDeviceUplinkRXLastDist";
+		response.setContentType("html/text;charset=UTF-8");
+		
+		String devEui=request.getParameter("devEui");
+		
+		//sql获取总服务器的ip
+		String mainServer=sql.getServerIP();
+		if(mainServer.substring(0,1).equals("e"))
+		{//如果报错获取总服务器IP报错
+			retString="e:"+mainServer+"-->MainServerGetIPERROR";
+			return retString;
+		}
+		String addr=doIns.getIpAddr(request);
+		if(addr.equals(mainServer)||devMode)
+		{//是总服务器的话获取数据
+			retString=sql.getDeviceUplinkRXLast(devEui, "1");
+		
+		}else
+		{//如果不是
+			retString="e:Your address has no permission.YouAddr:"+addr;
+		}
+		
+		return retString;
+	}
+
 	private static String GetUplinkRXLast(HttpServletResponse response, HttpServletRequest request, Sql sql,
 			boolean devMode)
 	{
