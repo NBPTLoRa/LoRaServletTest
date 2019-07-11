@@ -405,7 +405,7 @@ public class Sql {
 			 InfluxDB iDB=InfluxDBFactory.connect("http://47.101.172.221:8086", "admin", "admin");		
 			 if(iDB==null)
 			 {
-				 ret.add("e:Á¬½ÓÊ§°Ü");
+				 ret.add("e:è¿žæŽ¥å¤±è´¥");
 				 return ret;
 			 }
 			 String sqlcom="SELECT "+sj+" FROM "+tab+" where dev_eui = '"+devEui+"'and time>='"+shuzhu[0]+"' and time <='"+shuzhu[1]+"'";
@@ -475,11 +475,11 @@ public class Sql {
 		 {
 		        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
 		        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd,HH:mm:ss.SSSSSS");
-		        // ½«×Ö·û´®µÄÈÕÆÚ×ªÎªDateÀàÐÍ£¬ParsePosition(0)±íÊ¾´ÓµÚÒ»¸ö×Ö·û¿ªÊ¼½âÎö
+		        // å°†å­—ç¬¦ä¸²çš„æ—¥æœŸè½¬ä¸ºDateç±»åž‹ï¼ŒParsePosition(0)è¡¨ç¤ºä»Žç¬¬ä¸€ä¸ªå­—ç¬¦å¼€å§‹è§£æž
 		        Date date = sdf.parse(ed_time, new ParsePosition(0));
 		        Calendar calendar = Calendar.getInstance();
 		        calendar.setTime(date);
-		        // add·½·¨ÖÐµÄµÚ¶þ¸ö²ÎÊýnÖÐ£¬ÕýÊý±íÊ¾¸ÃÈÕÆÚºónÌì£¬¸ºÊý±íÊ¾¸ÃÈÕÆÚµÄÇ°nÌì
+		        // addæ–¹æ³•ä¸­çš„ç¬¬äºŒä¸ªå‚æ•°nä¸­ï¼Œæ­£æ•°è¡¨ç¤ºè¯¥æ—¥æœŸåŽnå¤©ï¼Œè´Ÿæ•°è¡¨ç¤ºè¯¥æ—¥æœŸçš„å‰nå¤©
 		        calendar.add(Calendar.HOUR_OF_DAY, -(Integer.parseInt(t)));
 				 String dateStr=df.format(calendar.getTimeInMillis());
 				return dateStr;
@@ -502,7 +502,7 @@ public class Sql {
 			 InfluxDB iDB=InfluxDBFactory.connect("http://47.101.172.221:8086", "admin", "admin");		
 			 if(iDB==null)
 			 {
-				 ret.add("e:Á¬½ÓÊ§°Ü");
+				 ret.add("e:è¿žæŽ¥å¤±è´¥");
 				 return ret;
 			 }
 			 Query query=new Query(sql, "LoRaDB");
@@ -532,7 +532,7 @@ public class Sql {
 			 InfluxDB iDB=InfluxDBFactory.connect("http://47.101.172.221:8086", "admin", "admin");		
 			 if(iDB==null)
 			 {
-				 ret=("e:Á¬½ÓÊ§°Ü");
+				 ret=("e:è¿žæŽ¥å¤±è´¥");
 				 return ret;
 			 }
 			 Query query=new Query(sql, "LoRaDB");
@@ -777,7 +777,7 @@ public class Sql {
 			 try
 			 {
 			 String ret="";
-			 String sql="select time,device_name,value  from device_uplink where dev_eui = '"+devEui+"' order by time desc limit "+count;
+			 String sql="select time,dr,frequency,rssi,snr  from device_uplink where dev_eui = '"+devEui+"' order by time desc limit "+count;
 			 ret=Db_1(sql);
 			 if(ret.toString().equals("0"))
 			 {
