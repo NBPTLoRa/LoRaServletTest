@@ -769,4 +769,33 @@ public class Sql {
 				 return re;
 			 }
 		 }
+		 
+		 @SuppressWarnings("finally")
+		public String getDeviceUplinkRXLast(String devEui,String count)
+		 {
+			 String re = "";
+			 try
+			 {
+			 String ret="";
+			 String sql="select time,device_name,value  from device_uplink where dev_eui = '"+devEui+"' order by time desc limit "+count;
+			 ret=Db_1(sql);
+			 if(ret.toString().equals("0"))
+			 {
+				 re="00";
+			 }
+			 else
+			 {
+				 re=devEui+","+ret.toString().substring(0,ret.toString().length()-2);
+			 }
+			 }
+			 catch(Exception ex)
+			 {
+				 re="e:"+ex.toString();
+				 ex.printStackTrace();
+			 }
+			 finally
+			 {
+				 return re;
+			 }
+		 }
 }
