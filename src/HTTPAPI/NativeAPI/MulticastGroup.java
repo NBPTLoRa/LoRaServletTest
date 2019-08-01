@@ -20,7 +20,7 @@ public class MulticastGroup extends APIObject{
 				"    \"data\": \""+encodeBase64(data)+"\",\r\n" + 
 				"    \"fCnt\": 0,\r\n" + 
 				"    \"fPort\": 10,\r\n" + 
-				"    \"multicastGroupID\": \"e4bc7bf7-6cc5-45bd-b3c5-d2911c1012a9\"\r\n" + 
+				"    \"multicastGroupID\": \""+ID+"\"\r\n" + 
 				"  }\r\n" + 
 				"}";
 		JsonObject dObject=new JsonParser().parse(deviceObj).getAsJsonObject();
