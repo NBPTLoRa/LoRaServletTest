@@ -68,4 +68,11 @@ public class Device extends APIObject {
 		JsonObject retJ=new JsonParser().parse(s).getAsJsonObject();
 		return retJ;
 	}
+	
+	public JsonObject deviceKeysDEL(String devEui,String token)
+	{
+		String ret=httpDelApi(devEui+"/keys", token).getBody();
+		JsonObject retJ=new JsonParser().parse(ret).getAsJsonObject();
+		return retJ;
+	}
 }

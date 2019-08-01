@@ -50,6 +50,14 @@ public class DeviceDEL {
 			{//不通过
 				retString="e:"+addReturn.toString();
 			}
+			addReturn=device.deviceKeysDEL(devEui, token);
+			if(addReturn.toString().equals("{}"))
+			{//通过
+				retString="1";
+			}else
+			{//不通过
+				retString+="e:DELKEYSERROR"+addReturn.toString();
+			}
 		}
 		else
 		{//如果不是主服务器发来的请求
